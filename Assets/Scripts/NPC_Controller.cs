@@ -11,19 +11,19 @@ public class NPC_Controller : MonoBehaviour
     public string[] taskItemNames = {
         "Medicine",
         "FamilyPhoto",
-        "WaterGlass"
+        "Notepad"
     };
 
     public string[] taskDialogues = {
         "I can't find my medicine...",
         "Where is my family photo? I need to see it...",
-        "Can you get me some water please..."
+        "Can you get me a notepad please..."
     };
 
     public string[] confusionDialogues = {
         "Did you take my medicine?!",
         "Someone moved my photo!",
-        "I asked for water ages ago!"
+        "I asked for notepad ages ago!"
     };
 
     private string[][] responseChoices = {
@@ -38,9 +38,9 @@ public class NPC_Controller : MonoBehaviour
             "You should keep track of your things"
         },
         new string[] {
-            "Here's your water, no rush",
-            "You keep forgetting things",
-            "You should remember to drink water"
+            "Here's your notepad, no rush",
+            "You keep forgetting things, write it quickly",
+            "You should keep it with yourself all the time"
         }
     };
 
