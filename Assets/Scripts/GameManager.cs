@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,8 +18,8 @@ public class GameManager : MonoBehaviour
     public bool gameActive = false;
 
     [Header("UI")]
-    public Text scoreText;
-    public Text timerText;
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI timerText;
     public Slider stressSlider;
     public GameObject gameOverPanel;
     public GameObject successPanel;

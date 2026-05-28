@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class NPC_Controller : MonoBehaviour
 {
@@ -50,11 +51,11 @@ public class NPC_Controller : MonoBehaviour
 
     [Header("UI References")]
     public GameObject requestPanel;
-    public Text grandpaDialogueText;
+    public TextMeshProUGUI grandpaDialogueText;
     public GameObject choicePanel;
     public Button[] choiceButtons;
-    public Text[] choiceTexts;
-    public Text feedbackText;
+    public TextMeshProUGUI[] choiceTexts;
+    public TextMeshProUGUI feedbackText;
     public GameObject feedbackPanel;
 
     [Header("Animator")]

@@ -3532,6 +3532,7 @@ GameObject:
   m_Component:
   - component: {fileID: 457616708}
   - component: {fileID: 457616709}
+  - component: {fileID: 457616710}
   m_Layer: 0
   m_Name: Grandpa
   m_TagString: Untagged
@@ -3580,14 +3581,41 @@ MonoBehaviour:
   - Did you take my medicine?!
   - Someone moved my photo!
   - I asked for water ages ago!
-  requestPanel: {fileID: 0}
-  grandpaDialogueText: {fileID: 0}
-  choicePanel: {fileID: 0}
-  choiceButtons: []
-  choiceTexts: []
-  feedbackText: {fileID: 0}
-  feedbackPanel: {fileID: 0}
+  requestPanel: {fileID: 758259037}
+  grandpaDialogueText: {fileID: 1369240770}
+  choicePanel: {fileID: 1397053728}
+  choiceButtons:
+  - {fileID: 178178465}
+  - {fileID: 783315099}
+  - {fileID: 1118145835}
+  choiceTexts:
+  - {fileID: 1681710326}
+  - {fileID: 1234678836}
+  - {fileID: 675041110}
+  feedbackText: {fileID: 406334078}
+  feedbackPanel: {fileID: 205850922}
   grandpaAnimator: {fileID: 0}
+--- !u!95 &457616710
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457616707}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &458191401
 GameObject:
   m_ObjectHideFlags: 0
@@ -10464,11 +10492,11 @@ MonoBehaviour:
   tasksCompleted: 0
   sessionTime: 0
   gameActive: 0
-  scoreText: {fileID: 0}
-  timerText: {fileID: 0}
-  stressSlider: {fileID: 0}
-  gameOverPanel: {fileID: 0}
-  successPanel: {fileID: 0}
+  scoreText: {fileID: 312859885}
+  timerText: {fileID: 73803377}
+  stressSlider: {fileID: 268466425}
+  gameOverPanel: {fileID: 1516390462}
+  successPanel: {fileID: 1864225924}
   roomLight: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   stressColor: {r: 0.8, g: 0.4, b: 0.4, a: 1}
