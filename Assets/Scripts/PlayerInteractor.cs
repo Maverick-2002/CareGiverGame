@@ -6,7 +6,7 @@ public class PlayerInteractor : MonoBehaviour
 {
     [Header("Object Settings")]
     public string objectName;
-    public bool isCorrectItem = false;
+    public bool isCorrectItem;
     public float interactDistance = 2f;
 
     [Header("Visuals")]
@@ -75,7 +75,6 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (isCorrectItem)
         {
-            // correct item!
             HideHighlight();
             gameObject.SetActive(false);
             NPC_Controller.Instance.OnCorrectItemFound();
@@ -83,9 +82,12 @@ public class PlayerInteractor : MonoBehaviour
         }
         else
         {
-            // wrong item
+            // wrong item — flash red + stress
             GameManager.Instance.OnIncorrectPickup();
             StartCoroutine(WrongItemFeedback());
+
+            // show wrong item message
+            NPC_Controller.Instance.ShowWrongItemFeedback();
         }
     }
 

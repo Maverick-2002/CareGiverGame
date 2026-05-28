@@ -93,7 +93,7 @@ public class NPC_Controller : MonoBehaviour
         grandpaDialogueText.text = taskDialogues[index];
 
         // set correct item
-        SetCorrectItem(taskItemNames[index]);
+        //SetCorrectItem(taskItemNames[index]);
 
         // confusion event after 10 seconds
         StartCoroutine(ConfusionEvent());
@@ -113,7 +113,7 @@ public class NPC_Controller : MonoBehaviour
 
     private IEnumerator ConfusionEvent()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(5f);
 
         if (!GameManager.Instance.gameActive) yield break;
 
@@ -210,9 +210,23 @@ public class NPC_Controller : MonoBehaviour
         feedbackPanel.SetActive(false);
     }
 
+    public void ShowWrongItemFeedback()
+    {
+        StartCoroutine(WrongItemMessage());
+    }
+
+    private IEnumerator WrongItemMessage()
+    {
+        feedbackPanel.SetActive(true);
+        feedbackText.text = "That's not it...";
+        feedbackText.color = Color.red;
+        yield return new WaitForSeconds(1f);
+        feedbackPanel.SetActive(false);
+    }
+
     private IEnumerator NextTask()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.5f);
         currentTask++;
         GameManager.Instance.OnTaskCompleted();
 
