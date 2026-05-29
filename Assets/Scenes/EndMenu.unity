@@ -1462,7 +1462,7 @@ MonoBehaviour:
   peakStressText: {fileID: 647632003}
   empathyRatingText: {fileID: 951945159}
   playerName: {fileID: 2052707749}
-  canvasGroup: {fileID: 1546884443}
+  canvasGroup: {fileID: 1643096032}
 --- !u!1 &951945157
 GameObject:
   m_ObjectHideFlags: 0
@@ -1842,6 +1842,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 944966957}
+        m_TargetAssemblyTypeName: ResultScreen, Assembly-CSharp
+        m_MethodName: LoadMetrics
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2482,7 +2494,6 @@ GameObject:
   - component: {fileID: 1546884442}
   - component: {fileID: 1546884441}
   - component: {fileID: 1546884440}
-  - component: {fileID: 1546884443}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2577,18 +2588,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!225 &1546884443
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1546884438}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &1571809370
 GameObject:
   m_ObjectHideFlags: 0
@@ -2734,6 +2733,7 @@ GameObject:
   - component: {fileID: 1643096029}
   - component: {fileID: 1643096031}
   - component: {fileID: 1643096030}
+  - component: {fileID: 1643096032}
   m_Layer: 5
   m_Name: BG
   m_TagString: Untagged
@@ -2798,6 +2798,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1643096028}
   m_CullTransparentMesh: 1
+--- !u!225 &1643096032
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643096028}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1755119779
 GameObject:
   m_ObjectHideFlags: 0
@@ -3655,6 +3667,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 944966957}
+        m_TargetAssemblyTypeName: ResultScreen, Assembly-CSharp
+        m_MethodName: LoadMetrics
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

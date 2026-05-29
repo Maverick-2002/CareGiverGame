@@ -81,20 +81,9 @@ public class ResultScreen : MonoBehaviour
         }
     }
 
-    private void ShowMetrics()
+    public void LoadMetrics()
     {
-        // hide result panels
-        successPanel.SetActive(false);
-        failPanel.SetActive(false);
-
-        // show metrics
-        metricsPanel.SetActive(true);
-        LoadMetrics();
-    }
-
-    private void LoadMetrics()
-    {
-        string playerName = PlayerPrefs.GetString("PlayerName","");
+        string player = PlayerPrefs.GetString("PlayerName","");
         int score = PlayerPrefs.GetInt("Score", 0);
         int tasks = PlayerPrefs.GetInt(
             "TasksCompleted", 0);
@@ -117,6 +106,7 @@ public class ResultScreen : MonoBehaviour
             Mathf.FloorToInt(time) + "s";
         peakStressText.text = "Peak Stress: " +
             Mathf.FloorToInt(peakStress) + "%";
+        playerName.text = player;
 
         // empathy rating
         string rating = "";
