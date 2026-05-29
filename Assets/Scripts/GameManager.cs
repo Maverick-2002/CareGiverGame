@@ -42,15 +42,17 @@ public class GameManager : MonoBehaviour
     public AudioSource sfxSource;
     public AudioClip playerConfusion;
     public AudioClip heartbeatSFX;
+    private bool heartbeatPlaying = false;
 
-// metrics
-private int incorrectPickups = 0;
+    // metrics
+    private int incorrectPickups = 0;
     private int correctChoices = 0;
     private int wrongChoices = 0;
     private float currentTaskTimer = 0f;
     private float stressTimer = 0f;
     public float stressIncreaseInterval = 5f;
     public float stressIncreaseAmount = 5f;
+    private float peakStress = 0f;
 
     private void Awake()
     {
@@ -131,18 +133,19 @@ private int incorrectPickups = 0;
     }
     private void HandleHeartbeat()
     {
-        if (grandpaStress > 70f)
-            {
-                sfxSource.clip = heartbeatSFX;
-                sfxSource.loop = true;
-                sfxSource.Play();
-            }
-        else
-         
-            {
-                sfxSource.Stop();
-            }
-        
+        if (grandpaStress > 70f && !heartbeatPlaying)
+        {
+            heartbeatPlaying = true;
+            sfxSource.clip = heartbeatSFX;
+            sfxSource.loop = true;
+            sfxSource.Play();
+        }
+        else if (grandpaStress <= 70f && heartbeatPlaying)
+        {
+            heartbeatPlaying = false;
+            sfxSource.loop = false;
+            sfxSource.Stop();
+        }
     }
     public void ReduceStress(float amount)
     {
@@ -184,14 +187,24 @@ private int incorrectPickups = 0;
         if (roomLight == null) return;
 
         float t = grandpaStress / maxStress;
+
+        // track peak stress
+        if (grandpaStress > peakStress)
+            peakStress = grandpaStress;
+
         roomLight.color = Color.Lerp(normalColor, stressColor, t);
+        roomLight.intensity = Mathf.Lerp(1f, 0.3f, t);
 
         if (vignette != null)
-            vignette.intensity.value = Mathf.Lerp(0.3f, 0.7f, t);
+            vignette.intensity.value = Mathf.Lerp(0.3f, 0.75f, t);
 
         if (colorAdjustments != null)
             colorAdjustments.saturation.value =
-                Mathf.Lerp(0f, -80f, t);
+                Mathf.Lerp(0f, -100f, t);
+
+        // pitch increase for urgency
+        if (bgmSource != null)
+            bgmSource.pitch = Mathf.Lerp(1f, 1.4f, t);
     }
 
     private void UpdateUI()
@@ -205,22 +218,21 @@ private int incorrectPickups = 0;
         gameActive = false;
         ThirdPersonCamera.OpenUI();
 
-        // save metrics
+        // save success state
+        PlayerPrefs.SetInt("GameSuccess", success ? 1 : 0);
+
+        // save all metrics
         PlayerPrefs.SetInt("Score", score);
         PlayerPrefs.SetInt("TasksCompleted", tasksCompleted);
-        PlayerPrefs.SetInt("IncorrectPickups", incorrectPickups);
         PlayerPrefs.SetInt("CorrectChoices", correctChoices);
         PlayerPrefs.SetInt("WrongChoices", wrongChoices);
         PlayerPrefs.SetFloat("SessionTime", sessionTime);
+        PlayerPrefs.SetFloat("PeakStress", peakStress);
         PlayerPrefs.Save();
 
-        // send to AWS
         StartCoroutine(SendToAWS());
 
-        if (success)
-            successPanel.SetActive(true);
-        else
-            gameOverPanel.SetActive(true);
+        SceneManager.LoadScene(2);
     }
 
     private IEnumerator SendToAWS()
