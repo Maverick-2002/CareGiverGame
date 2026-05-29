@@ -113,16 +113,14 @@ public class MetricLogger : MonoBehaviour
         PlayerPrefs.SetInt("ReplayCount", replayCount);
         PlayerPrefs.Save();
 
-        StartCoroutine(PostMetrics());
+        StartCoroutine(PostMetricsAndWaits());
     }
 
-    private IEnumerator PostMetrics()
+    public IEnumerator PostMetricsAndWaits()
     {
-        // build JSON
-        string json = JsonUtility.ToJson(new MetricsData
+        MetricsData data = new MetricsData
         {
-            playerName = PlayerPrefs.GetString(
-                "PlayerName", "Player"),
+            playerName = PlayerPrefs.GetString("PlayerName", "Player"),
             finalScore = finalScore,
             tasksCompleted = tasksCompleted,
             incorrectPickups = incorrectPickups,
@@ -134,34 +132,25 @@ public class MetricLogger : MonoBehaviour
             avgTaskTime = GetAverageTaskTime(),
             confusionTriggersHit = confusionTriggersHit,
             replayCount = replayCount
-        });
+        };
 
-        Debug.Log("Sending metrics: " + json);
+        string json = JsonUtility.ToJson(data);
+        Debug.Log("Sending: " + json);
 
-        UnityWebRequest request = new UnityWebRequest(
-            apiEndpoint, "POST");
-
-        byte[] bodyRaw =
-            System.Text.Encoding.UTF8.GetBytes(json);
-
-        request.uploadHandler =
-            new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler =
-            new DownloadHandlerBuffer();
-        request.SetRequestHeader(
-            "Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-
-        if (request.result ==
-            UnityWebRequest.Result.Success)
+        using (UnityWebRequest request = UnityWebRequest.Post(
+            apiEndpoint, json, "application/json"))
         {
-            Debug.Log("Metrics sent successfully!");
-        }
-        else
-        {
-            Debug.LogError("Failed: " +
-                request.error);
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("SUCCESS: " + request.downloadHandler.text);
+            }
+            else
+            {
+                Debug.LogError("FAILED: " + request.error);
+                Debug.LogError("RESPONSE BODY: " + request.downloadHandler.text);
+            }
         }
     }
 }

@@ -14720,7 +14720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06cdd626690f4144c84ebb79e2cceb1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  apiEndpoint: YOUR_API_GATEWAY_URL
+  apiEndpoint: https://wyn51co0gh.execute-api.us-east-1.amazonaws.com/prod/metrics
 --- !u!4 &1817081769
 Transform:
   m_ObjectHideFlags: 0

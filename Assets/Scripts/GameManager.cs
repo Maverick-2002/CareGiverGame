@@ -232,12 +232,12 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(SendToAWS());
 
-        SceneManager.LoadScene(2);
     }
 
     private IEnumerator SendToAWS()
     {
-        MetricLogger.Instance.SendMetrics();
-        yield return null;
+        yield return StartCoroutine(
+            MetricLogger.Instance.PostMetricsAndWaits());
+        SceneManager.LoadScene(2);
     }
 }
