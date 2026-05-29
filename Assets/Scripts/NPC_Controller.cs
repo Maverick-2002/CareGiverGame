@@ -7,6 +7,7 @@ public class NPC_Controller : MonoBehaviour
 {
     public static NPC_Controller Instance;
 
+
     [Header("Tasks")]
     public string[] taskItemNames = {
         "Medicine",
@@ -98,7 +99,6 @@ public class NPC_Controller : MonoBehaviour
         // confusion event after 10 seconds
         StartCoroutine(ConfusionEvent());
     }
-
     private void SetCorrectItem(string itemName)
     {
         PlayerInteractor[] allItems =
@@ -210,17 +210,18 @@ public class NPC_Controller : MonoBehaviour
         feedbackPanel.SetActive(false);
     }
 
-    public void ShowWrongItemFeedback()
+    public void ShowWrongItemFeedback(
+        string message = "You're forgetting where things are kept...")
     {
-        StartCoroutine(WrongItemMessage());
+        StartCoroutine(WrongItemMessage(message));
     }
 
-    private IEnumerator WrongItemMessage()
+    private IEnumerator WrongItemMessage(string message)
     {
         feedbackPanel.SetActive(true);
-        feedbackText.text = "That's not it...";
+        feedbackText.text = message;
         feedbackText.color = Color.red;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         feedbackPanel.SetActive(false);
     }
 

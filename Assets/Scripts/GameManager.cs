@@ -4,10 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    public Volume globalVolume;
+    private Vignette vignette;
+    private ColorAdjustments colorAdjustments;
 
     [Header("Game State")]
     public float grandpaStress = 0f;
@@ -29,11 +35,22 @@ public class GameManager : MonoBehaviour
     public Color normalColor = Color.white;
     public Color stressColor = new Color(0.8f, 0.4f, 0.4f);
 
-    // metrics
-    private int incorrectPickups = 0;
+    [Header("Audio")]
+    public AudioSource bgmSource;
+    public AudioClip correctSFX;
+    public AudioClip wrongSFX;
+    public AudioSource sfxSource;
+    public AudioClip playerConfusion;
+    public AudioClip heartbeatSFX;
+
+// metrics
+private int incorrectPickups = 0;
     private int correctChoices = 0;
     private int wrongChoices = 0;
     private float currentTaskTimer = 0f;
+    private float stressTimer = 0f;
+    public float stressIncreaseInterval = 5f;
+    public float stressIncreaseAmount = 5f;
 
     private void Awake()
     {
@@ -49,6 +66,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        sfxSource = GetComponent<AudioSource>();
+        bgmSource.loop = true;
+        bgmSource.Play();
+        globalVolume.profile.TryGet(out vignette);
+        globalVolume.profile.TryGet(out colorAdjustments);
         gameActive = true;
         UpdateUI();
     }
@@ -57,29 +79,68 @@ public class GameManager : MonoBehaviour
     {
         if (!gameActive) return;
 
+        HandleStressIncrease();
+        UpdateTimers();
+        UpdateTimerUI();
+        CheckGameOver();
+    }
+
+    private void HandleStressIncrease()
+    {
+        stressTimer += Time.deltaTime;
+
+        if (stressTimer >= stressIncreaseInterval)
+        {
+            stressTimer = 0f;
+            AddStress(stressIncreaseAmount);
+        }
+    }
+
+    private void UpdateTimers()
+    {
         sessionTime += Time.deltaTime;
         currentTaskTimer += Time.deltaTime;
+    }
 
-        timerText.text = "Time: "
-            + Mathf.FloorToInt(sessionTime) + "s";
-
+    private void UpdateTimerUI()
+    {
+        timerText.text = "Time: " + Mathf.FloorToInt(sessionTime) + "s";
         stressSlider.value = grandpaStress / maxStress;
-
         UpdateStressVisuals();
+    }
 
+    private void CheckGameOver()
+    {
         if (grandpaStress >= maxStress)
         {
             EndGame(false);
         }
     }
-
+    public void playerConfusionSFX()
+    {
+       sfxSource.PlayOneShot(playerConfusion);
+    }
     public void AddStress(float amount)
     {
-        grandpaStress = Mathf.Clamp(
-            grandpaStress + amount, 0f, maxStress);
+        grandpaStress = Mathf.Clamp(grandpaStress + amount, 0f, maxStress);
         wrongChoices++;
+        HandleHeartbeat();
     }
-
+    private void HandleHeartbeat()
+    {
+        if (grandpaStress > 70f)
+            {
+                sfxSource.clip = heartbeatSFX;
+                sfxSource.loop = true;
+                sfxSource.Play();
+            }
+        else
+         
+            {
+                sfxSource.Stop();
+            }
+        
+    }
     public void ReduceStress(float amount)
     {
         grandpaStress = Mathf.Clamp(
@@ -91,12 +152,14 @@ public class GameManager : MonoBehaviour
     {
         score += amount;
         scoreText.text = "Score: " + score;
+        sfxSource.PlayOneShot(correctSFX);
     }
 
     public void OnIncorrectPickup()
     {
         incorrectPickups++;
         AddStress(5f);
+        sfxSource.PlayOneShot(wrongSFX);
     }
 
     public void OnTaskCompleted()
@@ -117,6 +180,13 @@ public class GameManager : MonoBehaviour
 
         float t = grandpaStress / maxStress;
         roomLight.color = Color.Lerp(normalColor, stressColor, t);
+
+        if (vignette != null)
+            vignette.intensity.value = Mathf.Lerp(0.3f, 0.7f, t);
+
+        if (colorAdjustments != null)
+            colorAdjustments.saturation.value =
+                Mathf.Lerp(0f, -80f, t);
     }
 
     private void UpdateUI()
