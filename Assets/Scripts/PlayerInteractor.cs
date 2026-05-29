@@ -105,6 +105,7 @@ public class PlayerInteractor : MonoBehaviour
         GameManager.Instance.playerConfusionSFX();
         await Task.Delay(2000);
         NPC_Controller.Instance.ShowWrongItemFeedback("Now Search the item in the room?!");
+        MetricLogger.Instance.TrackConfusionTriggered();
     }
 
     private void OnInteract()

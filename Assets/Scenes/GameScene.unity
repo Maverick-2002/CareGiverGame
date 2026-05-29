@@ -14690,6 +14690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06cdd626690f4144c84ebb79e2cceb1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  apiEndpoint: YOUR_API_GATEWAY_URL
 --- !u!4 &1817081769
 Transform:
   m_ObjectHideFlags: 0
@@ -14735,7 +14736,9 @@ MonoBehaviour:
   bgmSource: {fileID: 1817081771}
   correctSFX: {fileID: 8300000, guid: 394c01e441a9a3d4eb7ac450ac638171, type: 3}
   wrongSFX: {fileID: 8300000, guid: 07d5d9ba9268c6c40b75d922fed75626, type: 3}
+  sfxSource: {fileID: 1817081772}
   playerConfusion: {fileID: 8300000, guid: b976c22b6c1b8e14cb28f74d40af7bff, type: 3}
+  heartbeatSFX: {fileID: 8300000, guid: 0e4947c168b47bf41a532b69821a2f58, type: 3}
   stressIncreaseInterval: 5
   stressIncreaseAmount: 5
 --- !u!82 &1817081771

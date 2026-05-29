@@ -73,12 +73,15 @@ private int incorrectPickups = 0;
         globalVolume.profile.TryGet(out colorAdjustments);
         gameActive = true;
         UpdateUI();
+        NPC_Controller.Instance.StartTask(0);
     }
 
     private void Update()
     {
         if (!gameActive) return;
-
+        MetricLogger.Instance.TrackStress(grandpaStress);
+        MetricLogger.Instance.TrackSessionTime(sessionTime);
+        MetricLogger.Instance.TrackScore(score);
         HandleStressIncrease();
         UpdateTimers();
         UpdateTimerUI();
@@ -160,6 +163,7 @@ private int incorrectPickups = 0;
         incorrectPickups++;
         AddStress(5f);
         sfxSource.PlayOneShot(wrongSFX);
+        MetricLogger.Instance.TrackIncorrectPickup();
     }
 
     public void OnTaskCompleted()
@@ -172,6 +176,7 @@ private int incorrectPickups = 0;
         {
             EndGame(true);
         }
+        MetricLogger.Instance.TrackTaskCompleted();
     }
 
     private void UpdateStressVisuals()
@@ -220,7 +225,7 @@ private int incorrectPickups = 0;
 
     private IEnumerator SendToAWS()
     {
-        // fill this after AWS setup
+        MetricLogger.Instance.SendMetrics();
         yield return null;
     }
 }

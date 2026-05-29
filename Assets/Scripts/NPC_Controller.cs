@@ -161,6 +161,7 @@ public class NPC_Controller : MonoBehaviour
         {
             case 0:
                 // comfort
+                MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.ReduceStress(15f);
                 GameManager.Instance.AddScore(50);
                 ShowFeedback("Grandpa feels calm and cared for",
@@ -174,6 +175,7 @@ public class NPC_Controller : MonoBehaviour
 
             case 1:
                 // neutral
+                MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.AddStress(5f);
                 ShowFeedback("Try to be more empathetic",
                     Color.yellow);
@@ -182,6 +184,7 @@ public class NPC_Controller : MonoBehaviour
 
             case 2:
                 // stress
+                MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.AddStress(20f);
                 ShowFeedback("This response caused distress",
                     Color.red);
