@@ -2,156 +2,154 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Caregiver Metrics Dashboard</title>
+  <title>Care Rush — Metrics Dashboard</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
       background: #f4f6f9;
+      padding: 30px;
       color: #333;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 20px;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 6px;
     }
 
-    .card {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-    }
-
-    .metric {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    .metric:last-child {
-      border-bottom: none;
+    p {
+      text-align: center;
+      color: #888;
+      margin-bottom: 24px;
     }
 
     button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
+      display: block;
+      margin: 0 auto 20px;
+      padding: 10px 24px;
       background: #2563eb;
       color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #1d4ed8;
-    }
-
-    .status {
-      margin-top: 15px;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
+      border: none;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    th {
+      background: #2563eb;
+      color: white;
+      padding: 12px;
+      text-align: left;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    #status {
+      text-align: center;
+      margin-bottom: 12px;
+      color: #888;
     }
   </style>
 </head>
+
 <body>
 
-  <div class="container">
-    <h1>Caregiver Metrics Dashboard</h1>
+  <h1>Care Rush — Metrics Dashboard</h1>
+  <p>Live data from AWS DynamoDB</p>
 
-    <div class="card">
-      <h2>Send Test Metrics</h2>
+  <button onclick="loadMetrics()">Refresh Data</button>
 
-      <input type="text" id="playerName" placeholder="Player Name" value="Gauraang" />
-      <input type="number" id="score" placeholder="Final Score" value="100" />
-      <input type="number" id="tasks" placeholder="Tasks Completed" value="3" />
-      <input type="number" id="stress" placeholder="Peak Stress" value="45" />
+  <div id="status">Loading...</div>
 
-      <button onclick="sendMetrics()">Send Metrics</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Score</th>
+        <th>Tasks</th>
+        <th>Correct Choices</th>
+        <th>Peak Stress</th>
+        <th>Empathy Moments</th>
+        <th>Time (s)</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody id="metricsTable">
+      <tr>
+        <td colspan="8" style="text-align:center">
+          Loading...
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-      <div class="status" id="status"></div>
-    </div>
+<script>
+const API = "https://wyn51co0gh.execute-api.us-east-1.amazonaws.com/prod/metrics";
 
-    <div class="card">
-      <h2>Current Payload</h2>
-      <pre id="payloadPreview"></pre>
-    </div>
-  </div>
+async function loadMetrics() {
+  const table = document.getElementById("metricsTable");
+  const status = document.getElementById("status");
 
-  <script>
-    const API_ENDPOINT = "https://your-api-id.execute-api.us-east-1.amazonaws.com/prod/metrics";
+  status.textContent = "Fetching data...";
 
-    function buildPayload() {
-      return {
-        playerName: document.getElementById('playerName').value,
-        finalScore: parseInt(document.getElementById('score').value),
-        tasksCompleted: parseInt(document.getElementById('tasks').value),
-        peakStress: parseFloat(document.getElementById('stress').value),
-        sessionTime: 120,
-        correctChoices: 2,
-        wrongChoices: 1,
-        neutralChoices: 0,
-        avgTaskTime: 35,
-        incorrectPickups: 1,
-        confusionTriggersHit: 2,
-        replayCount: 1
-      };
+  try {
+    const res = await fetch(API);
+    const data = await res.json();
+
+    if (!Array.isArray(data) || data.length === 0) {
+      table.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align:center">
+            No data yet
+          </td>
+        </tr>`;
+      status.textContent = "No sessions found.";
+      return;
     }
 
-    function updatePreview() {
-      const payload = buildPayload();
-      document.getElementById('payloadPreview').textContent = JSON.stringify(payload, null, 2);
-    }
-
-    async function sendMetrics() {
-      const status = document.getElementById('status');
-      const payload = buildPayload();
-
-      try {
-        status.innerText = 'Sending...';
-
-        const response = await fetch(API_ENDPOINT, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
-
-        const data = await response.text();
-
-        status.innerText = 'Success: ' + data;
-      }
-      catch (error) {
-        console.error(error);
-        status.innerText = 'Error: ' + error;
-      }
-    }
-
-    updatePreview();
-
-    document.querySelectorAll('input').forEach(input => {
-      input.addEventListener('input', updatePreview);
+    table.innerHTML = "";
+    data.forEach(item => {
+      table.innerHTML += `
+        <tr>
+          <td>${item.playerName ?? "-"}</td>
+          <td>${item.finalScore ?? 0}</td>
+          <td>${item.tasksCompleted ?? 0}/3</td>
+          <td>${item.correctChoices ?? 0}/3</td>
+          <td>${parseFloat(item.peakStress ?? 0).toFixed(1)}%</td>
+          <td>${item.confusionTriggersHit ?? 0}</td>
+          <td>${parseFloat(item.sessionTime ?? 0).toFixed(1)}</td>
+          <td>${item.timestamp
+            ? new Date(item.timestamp).toLocaleString()
+            : "-"}</td>
+        </tr>`;
     });
-  </script>
+
+    status.textContent = 
+      "Last updated: " + new Date().toLocaleTimeString();
+
+  } catch (err) {
+    status.textContent = "Error: " + err.message;
+    console.error(err);
+  }
+}
+
+window.onload = loadMetrics;
+</script>
 
 </body>
 </html>
