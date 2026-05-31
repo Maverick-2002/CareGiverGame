@@ -60,7 +60,8 @@ public class NPC_Controller : MonoBehaviour
 
     [Header("Animator")]
     public Animator grandpaAnimator;
-
+    public float stress;
+ 
     [Header("Entry Animation")]
     public bool playerEnteredRoom = false;
 
@@ -81,24 +82,20 @@ public class NPC_Controller : MonoBehaviour
         choicePanel.SetActive(false);
         feedbackPanel.SetActive(false);
         requestPanel.SetActive(false);
-            grandpaAnimator.SetBool("IsStanding", false);
+        grandpaAnimator.SetBool("IsStanding", false);
     }
 
-    private void Update()
+    public void Update()
     {
-        if (!playerEnteredRoom) return;
-        if (GameManager.Instance == null) return;
-
-        float stress = GameManager.Instance.grandpaStress;
-
-        if (grandpaAnimator != null)
-            grandpaAnimator.SetFloat("StressLevel", stress);
+        stress = GameManager.Instance.grandpaStress;
+        grandpaAnimator.SetFloat("StressLevel", stress);
     }
 
     public void OnPlayerEnterRoom()
     {
         if (playerEnteredRoom) return;
         playerEnteredRoom = true;
+        StartTask(0);
         StartCoroutine(StandUpSequence());
     }
 
@@ -108,12 +105,20 @@ public class NPC_Controller : MonoBehaviour
 
         requestPanel.SetActive(true);
         grandpaDialogueText.text = "Oh... someone's here.";
-        print("Standup");
         grandpaAnimator.SetTrigger("StandUp");
 
         yield return new WaitForSeconds(2f);
         grandpaAnimator.SetBool("isStanding", true);
         StartTask(currentTask);
+
+        yield return new WaitForSeconds(3f);
+        grandpaAnimator.SetTrigger("isSearching");
+
+        yield return new WaitForSeconds(6f);
+        grandpaAnimator.SetTrigger("Confused");
+
+
+
     }
 
     public void StartTask(int index)
@@ -123,29 +128,23 @@ public class NPC_Controller : MonoBehaviour
             GameManager.Instance.OnTaskCompleted();
             return;
         }
-
         requestPanel.SetActive(true);
         grandpaDialogueText.text = taskDialogues[index];
 
         if (MetricLogger.Instance.isReady)
             MetricLogger.Instance.SendLiveUpdate();
 
+        
         StartCoroutine(ConfusionEvent());
     }
 
     private IEnumerator ConfusionEvent()
     {
         yield return new WaitForSeconds(5f);
-
-        if (!GameManager.Instance.gameActive) yield break;
-
-        grandpaDialogueText.text =
-            confusionDialogues[currentTask];
+        grandpaDialogueText.text = confusionDialogues[currentTask];
         GameManager.Instance.AddStress(10f);
+       
         MetricLogger.Instance.SendLiveUpdate();
-
-        if (grandpaAnimator != null)
-            grandpaAnimator.SetTrigger("Confused");
     }
 
     public void OnCorrectItemFound()
@@ -183,31 +182,24 @@ public class NPC_Controller : MonoBehaviour
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.ReduceStress(15f);
                 GameManager.Instance.AddScore(50);
-                ShowFeedback("Grandpa feels calm and cared for",
-                    Color.green);
-                grandpaDialogueText.text =
-                    "Thank you so much beta...";
-                if (grandpaAnimator != null)
-                    grandpaAnimator.SetTrigger("Happy");
+                ShowFeedback("Grandpa feels calm and cared for",Color.green);
+                grandpaDialogueText.text ="Thank you so much beta...";
+                
                 break;
 
             case 1:
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.AddStress(5f);
-                ShowFeedback("Try to be more empathetic",
-                    Color.yellow);
+                ShowFeedback("Try to be more empathetic",Color.yellow);
                 grandpaDialogueText.text = "Oh... okay.";
                 break;
 
             case 2:
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.AddStress(20f);
-                ShowFeedback("This response caused distress",
-                    Color.red);
-                grandpaDialogueText.text =
-                    "You don't understand...";
-                if (grandpaAnimator != null)
-                    grandpaAnimator.SetTrigger("Sad");
+                ShowFeedback("This response caused distress", Color.red);
+                grandpaDialogueText.text ="You don't understand...";
+               
                 break;
         }
 
@@ -221,6 +213,13 @@ public class NPC_Controller : MonoBehaviour
         feedbackText.text = message;
         feedbackText.color = color;
         StartCoroutine(HideFeedback());
+    }
+    public void PlayEndAnimation(bool success)
+    {
+        if (success)
+            grandpaAnimator.SetTrigger("Happy");
+        else
+            grandpaAnimator.SetTrigger("Sad");
     }
 
     private IEnumerator HideFeedback()

@@ -75,7 +75,6 @@ public class GameManager : MonoBehaviour
         globalVolume.profile.TryGet(out colorAdjustments);
         gameActive = true;
         UpdateUI();
-        NPC_Controller.Instance.StartTask(0);
     }
 
     private void Update()
@@ -99,6 +98,7 @@ public class GameManager : MonoBehaviour
             stressTimer = 0f;
             AddStress(stressIncreaseAmount);
         }
+        
     }
 
     private void UpdateTimers()
@@ -217,7 +217,10 @@ public class GameManager : MonoBehaviour
     {
         gameActive = false;
         ThirdPersonCamera.OpenUI();
-
+        if (success)
+            NPC_Controller.Instance.PlayEndAnimation(true);
+        else
+            NPC_Controller.Instance.PlayEndAnimation(false);
         // save success state
         PlayerPrefs.SetInt("GameSuccess", success ? 1 : 0);
 
@@ -236,8 +239,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator SendToAWS()
     {
-        yield return StartCoroutine(
-            MetricLogger.Instance.PostMetricsAndWaits());
+        yield return StartCoroutine(MetricLogger.Instance.PostMetricsAndWaits());
+        yield return new WaitForSeconds(2.5f);
         SceneManager.LoadScene(2);
     }
 }
