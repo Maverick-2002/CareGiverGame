@@ -106,18 +106,18 @@ public class ResultScreen : MonoBehaviour
             Mathf.FloorToInt(time) + "s";
         peakStressText.text = "Peak Stress: " +
             Mathf.FloorToInt(peakStress) + "%";
-        playerName.text = player;
+        playerName.text = "Player Name: " + player;
 
         // empathy rating
         string rating = "";
         if (correct == 3)
-            rating = "⭐⭐⭐ Compassionate Caregiver";
+            rating = "Compassionate Caregiver";
         else if (correct == 2)
-            rating = "⭐⭐ Caring and Learning";
+            rating = "Caring and Learning";
         else if (correct == 1)
-            rating = "⭐ Keep Practicing";
+            rating = "Keep Practicing";
         else
-            rating = "💙 Every Day Is A New Chance";
+            rating = "Every Day Is A New Chance";
 
         empathyRatingText.text = rating;
     }
