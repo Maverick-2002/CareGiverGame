@@ -90,22 +90,61 @@ public class PlayerInteractor : MonoBehaviour
         }
     }
 
-    private async void TriggerConfusion()
+    private void TriggerConfusion()
     {
-        // disable this object
-        HideHighlight();
+        StartCoroutine(ConfusionSequence());
+    }
+
+    private IEnumerator ConfusionSequence()
+    {
+        // fade out
+        yield return StartCoroutine(FadeOut());
         gameObject.SetActive(false);
 
         // enable duplicate elsewhere
         if (confusionDuplicate != null)
             confusionDuplicate.SetActive(true);
 
-        // show confusion message
-        NPC_Controller.Instance.ShowWrongItemFeedback("You're forgetting where things are kept...");
+        // first message
+        NPC_Controller.Instance.ShowWrongItemFeedback(
+            "You're forgetting where things are kept...");
         GameManager.Instance.playerConfusionSFX();
-        await Task.Delay(2000);
-        NPC_Controller.Instance.ShowWrongItemFeedback("Now Search the item in the room?!");
+
+        yield return new WaitForSeconds(2f);
+
+        // second message
+        NPC_Controller.Instance.ShowWrongItemFeedback(
+            "Now search the item in the room!");
         MetricLogger.Instance.TrackConfusionTriggered();
+    }
+
+    private IEnumerator FadeOut()
+    {
+        if (objectRenderer == null) yield break;
+
+        Material mat = objectRenderer.material;
+
+        // set material to transparent mode
+        mat.SetFloat("_Surface", 1); // 0 = opaque, 1 = transparent
+        mat.SetFloat("_Blend", 0);
+        mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+        mat.renderQueue = 3000;
+
+        Color startColor = mat.color;
+        float duration = 0.8f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
+            mat.color = new Color(
+                startColor.r,
+                startColor.g,
+                startColor.b,
+                alpha);
+            yield return null;
+        }
     }
 
     private void OnInteract()

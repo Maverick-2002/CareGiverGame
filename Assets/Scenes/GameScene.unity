@@ -1874,7 +1874,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 429e9e5316f79134abab4eee3a0503bb, type: 2}
+      objectReference: {fileID: 2100000, guid: 6863395c43a26d84892d07ca4422ebe0, type: 2}
+    - target: {fileID: 514695279369374306, guid: a8bcd1e7c98138b4a9a8fe1b8f9a8a55,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3c7e40883ae6bd74f906b82f4f30f218, type: 2}
     - target: {fileID: 516237479999835460, guid: a8bcd1e7c98138b4a9a8fe1b8f9a8a55,
         type: 3}
       propertyPath: m_Name
@@ -1951,10 +1956,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 59508645}
-    - targetCorrespondingSourceObject: {fileID: 516237479999835460, guid: a8bcd1e7c98138b4a9a8fe1b8f9a8a55,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 59508646}
   m_SourcePrefab: {fileID: 100100000, guid: a8bcd1e7c98138b4a9a8fe1b8f9a8a55, type: 3}
 --- !u!4 &59508643 stripped
 Transform:
@@ -1990,28 +1991,6 @@ MonoBehaviour:
   highlightMaterial: {fileID: 0}
   interactPrompt: {fileID: 364778344}
   playerObj: {fileID: 4956816949278582966}
---- !u!114 &59508646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 59508644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3c28532d4a27254ca4cf0f91298206c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectName: WRONGPAD
-  isCorrectItem: 0
-  interactDistance: 2
-  isConfusionObject: 0
-  confusionDuplicate: {fileID: 0}
-  confusionTriggerDistance: 2.5
-  normalMaterial: {fileID: 0}
-  highlightMaterial: {fileID: 0}
-  interactPrompt: {fileID: 0}
-  playerObj: {fileID: 0}
 --- !u!1001 &62456776
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10139,12 +10118,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: dac67ab486d43224c97dcb0397fb8feb, type: 2}
+      objectReference: {fileID: 2100000, guid: c19af3612bd138840ac3a93eb0ba86bc, type: 2}
     - target: {fileID: 5237550574218068237, guid: 8da2e341c57b7bc40804bd060e00be07,
         type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: e54f5d144b6477e42a8b8dcddbf3298c, type: 2}
+      objectReference: {fileID: 2100000, guid: 77675036829fe3f4aa5114cc1590a9a7, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -66024,7 +66003,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 6d22d010a995cb542a9a07c4fb15d17c, type: 2}
+      objectReference: {fileID: 2100000, guid: 5e018849c07e1e84eb5f4b8bc83b366c, type: 2}
     - target: {fileID: 4959661188786105437, guid: d93539865f1a8c849be0ccd37c990a44,
         type: 3}
       propertyPath: m_LocalPosition.x
