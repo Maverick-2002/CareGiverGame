@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -6,7 +7,6 @@ using TMPro;
 public class NPC_Controller : MonoBehaviour
 {
     public static NPC_Controller Instance;
-
 
     [Header("Tasks")]
     public string[] taskItemNames = {
@@ -45,7 +45,6 @@ public class NPC_Controller : MonoBehaviour
         }
     };
 
-    // 0=comfort, 1=neutral, 2=stress
     private int[] choiceEffects = { 0, 1, 2 };
 
     private int currentTask = 0;
@@ -61,6 +60,9 @@ public class NPC_Controller : MonoBehaviour
 
     [Header("Animator")]
     public Animator grandpaAnimator;
+
+    [Header("Entry Animation")]
+    public bool playerEnteredRoom = false;
 
     private void Awake()
     {
@@ -78,6 +80,39 @@ public class NPC_Controller : MonoBehaviour
     {
         choicePanel.SetActive(false);
         feedbackPanel.SetActive(false);
+        requestPanel.SetActive(false);
+            grandpaAnimator.SetBool("IsStanding", false);
+    }
+
+    private void Update()
+    {
+        if (!playerEnteredRoom) return;
+        if (GameManager.Instance == null) return;
+
+        float stress = GameManager.Instance.grandpaStress;
+
+        if (grandpaAnimator != null)
+            grandpaAnimator.SetFloat("StressLevel", stress);
+    }
+
+    public void OnPlayerEnterRoom()
+    {
+        if (playerEnteredRoom) return;
+        playerEnteredRoom = true;
+        StartCoroutine(StandUpSequence());
+    }
+
+    IEnumerator StandUpSequence()
+    {
+        yield return new WaitForSeconds(1f);
+
+        requestPanel.SetActive(true);
+        grandpaDialogueText.text = "Oh... someone's here.";
+        print("Standup");
+        grandpaAnimator.SetTrigger("StandUp");
+
+        yield return new WaitForSeconds(2f);
+        grandpaAnimator.SetBool("isStanding", true);
         StartTask(currentTask);
     }
 
@@ -85,20 +120,19 @@ public class NPC_Controller : MonoBehaviour
     {
         if (index >= taskItemNames.Length)
         {
-            // all tasks done
             GameManager.Instance.OnTaskCompleted();
             return;
         }
 
         requestPanel.SetActive(true);
         grandpaDialogueText.text = taskDialogues[index];
+
         if (MetricLogger.Instance.isReady)
-        {
             MetricLogger.Instance.SendLiveUpdate();
-        }
-            
+
         StartCoroutine(ConfusionEvent());
     }
+
     private IEnumerator ConfusionEvent()
     {
         yield return new WaitForSeconds(5f);
@@ -111,9 +145,7 @@ public class NPC_Controller : MonoBehaviour
         MetricLogger.Instance.SendLiveUpdate();
 
         if (grandpaAnimator != null)
-        {
             grandpaAnimator.SetTrigger("Confused");
-        }
     }
 
     public void OnCorrectItemFound()
@@ -148,7 +180,6 @@ public class NPC_Controller : MonoBehaviour
         switch (choiceEffects[choiceIndex])
         {
             case 0:
-
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.ReduceStress(15f);
                 GameManager.Instance.AddScore(50);
@@ -156,13 +187,11 @@ public class NPC_Controller : MonoBehaviour
                     Color.green);
                 grandpaDialogueText.text =
                     "Thank you so much beta...";
-
                 if (grandpaAnimator != null)
                     grandpaAnimator.SetTrigger("Happy");
                 break;
 
             case 1:
-
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.AddStress(5f);
                 ShowFeedback("Try to be more empathetic",
@@ -171,18 +200,17 @@ public class NPC_Controller : MonoBehaviour
                 break;
 
             case 2:
-
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.AddStress(20f);
                 ShowFeedback("This response caused distress",
                     Color.red);
                 grandpaDialogueText.text =
                     "You don't understand...";
-
                 if (grandpaAnimator != null)
                     grandpaAnimator.SetTrigger("Sad");
                 break;
         }
+
         MetricLogger.Instance.SendLiveUpdate();
         StartCoroutine(NextTask());
     }
