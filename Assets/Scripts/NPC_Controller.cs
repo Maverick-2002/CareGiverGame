@@ -7,6 +7,7 @@ using TMPro;
 public class NPC_Controller : MonoBehaviour
 {
     public static NPC_Controller Instance;
+    private bool shouldLookAtPlayer = false;
 
     [Header("Tasks")]
     public string[] taskItemNames = {
@@ -61,7 +62,7 @@ public class NPC_Controller : MonoBehaviour
     [Header("Animator")]
     public Animator grandpaAnimator;
     public float stress;
- 
+    public Transform playerTransform;
     [Header("Entry Animation")]
     public bool playerEnteredRoom = false;
 
@@ -112,10 +113,12 @@ public class NPC_Controller : MonoBehaviour
         StartTask(currentTask);
 
         yield return new WaitForSeconds(3f);
+        shouldLookAtPlayer = false;
         grandpaAnimator.SetTrigger("isSearching");
 
         yield return new WaitForSeconds(6f);
         grandpaAnimator.SetTrigger("Confused");
+
 
 
 
@@ -130,7 +133,7 @@ public class NPC_Controller : MonoBehaviour
         }
         requestPanel.SetActive(true);
         grandpaDialogueText.text = taskDialogues[index];
-
+        shouldLookAtPlayer = true;
         if (MetricLogger.Instance.isReady)
             MetricLogger.Instance.SendLiveUpdate();
 
@@ -154,7 +157,14 @@ public class NPC_Controller : MonoBehaviour
         MetricLogger.Instance.SendLiveUpdate();
         ShowChoicePanel();
     }
-
+    private void OnAnimatorIK(int layerIndex)
+    {
+        if (shouldLookAtPlayer)
+        {
+            grandpaAnimator.SetLookAtWeight(1f);
+            grandpaAnimator.SetLookAtPosition(playerTransform.position + Vector3.up * 1.6f);
+        }
+    }
     private void ShowChoicePanel()
     {
         choicePanel.SetActive(true);
@@ -216,6 +226,7 @@ public class NPC_Controller : MonoBehaviour
     }
     public void PlayEndAnimation(bool success)
     {
+        shouldLookAtPlayer = false;
         if (success)
             grandpaAnimator.SetTrigger("Happy");
         else

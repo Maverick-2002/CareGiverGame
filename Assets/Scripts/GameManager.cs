@@ -79,7 +79,6 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (!gameActive) return;
         MetricLogger.Instance.TrackStress(grandpaStress);
         MetricLogger.Instance.TrackSessionTime(sessionTime);
         MetricLogger.Instance.TrackScore(score);
@@ -92,7 +91,6 @@ public class GameManager : MonoBehaviour
     private void HandleStressIncrease()
     {
         stressTimer += Time.deltaTime;
-
         if (stressTimer >= stressIncreaseInterval)
         {
             stressTimer = 0f;
@@ -149,8 +147,7 @@ public class GameManager : MonoBehaviour
     }
     public void ReduceStress(float amount)
     {
-        grandpaStress = Mathf.Clamp(
-            grandpaStress - amount, 0f, maxStress);
+        grandpaStress = Mathf.Clamp( grandpaStress - amount, 0f, maxStress);
         correctChoices++;
     }
 
