@@ -92,37 +92,24 @@ public class NPC_Controller : MonoBehaviour
 
         requestPanel.SetActive(true);
         grandpaDialogueText.text = taskDialogues[index];
-
-        // set correct item
-        //SetCorrectItem(taskItemNames[index]);
-
-        // confusion event after 10 seconds
+        if (MetricLogger.Instance.isReady)
+        {
+            MetricLogger.Instance.SendLiveUpdate();
+        }
+            
         StartCoroutine(ConfusionEvent());
     }
-    private void SetCorrectItem(string itemName)
-    {
-        PlayerInteractor[] allItems =
-            FindObjectsOfType<PlayerInteractor>();
-
-        foreach (var item in allItems)
-        {
-            item.isCorrectItem =
-                (item.objectName == itemName);
-        }
-    }
-
     private IEnumerator ConfusionEvent()
     {
         yield return new WaitForSeconds(5f);
 
         if (!GameManager.Instance.gameActive) yield break;
 
-        // grandpa gets confused
         grandpaDialogueText.text =
             confusionDialogues[currentTask];
         GameManager.Instance.AddStress(10f);
+        MetricLogger.Instance.SendLiveUpdate();
 
-        // animator trigger
         if (grandpaAnimator != null)
         {
             grandpaAnimator.SetTrigger("Confused");
@@ -133,6 +120,7 @@ public class NPC_Controller : MonoBehaviour
     {
         StopAllCoroutines();
         requestPanel.SetActive(false);
+        MetricLogger.Instance.SendLiveUpdate();
         ShowChoicePanel();
     }
 
@@ -160,7 +148,7 @@ public class NPC_Controller : MonoBehaviour
         switch (choiceEffects[choiceIndex])
         {
             case 0:
-                // comfort
+
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.ReduceStress(15f);
                 GameManager.Instance.AddScore(50);
@@ -174,7 +162,7 @@ public class NPC_Controller : MonoBehaviour
                 break;
 
             case 1:
-                // neutral
+
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.AddStress(5f);
                 ShowFeedback("Try to be more empathetic",
@@ -183,7 +171,7 @@ public class NPC_Controller : MonoBehaviour
                 break;
 
             case 2:
-                // stress
+
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.AddStress(20f);
                 ShowFeedback("This response caused distress",
@@ -195,7 +183,7 @@ public class NPC_Controller : MonoBehaviour
                     grandpaAnimator.SetTrigger("Sad");
                 break;
         }
-
+        MetricLogger.Instance.SendLiveUpdate();
         StartCoroutine(NextTask());
     }
 

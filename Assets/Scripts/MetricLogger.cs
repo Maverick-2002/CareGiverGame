@@ -21,10 +21,10 @@ public class MetricLogger : MonoBehaviour
     private int wrongChoices = 0;
     private int neutralChoices = 0;
     private float peakStress = 0f;
-
+    private string sessionId = "";
     // Engagement Metrics
     private int confusionTriggersHit = 0;
-    private int replayCount = 0;
+    public bool isReady = false;
 
     // Task timing
     private List<float> taskTimes = new List<float>();
@@ -44,8 +44,9 @@ public class MetricLogger : MonoBehaviour
 
     private void Start()
     {
-        replayCount = PlayerPrefs.GetInt("ReplayCount", 0);
+        sessionId = System.Guid.NewGuid().ToString();
         taskStartTime = Time.time;
+        isReady = true;
     }
 
     // called every frame from GameManager
@@ -106,13 +107,13 @@ public class MetricLogger : MonoBehaviour
             total += t;
         return total / taskTimes.Count;
     }
-
+    public void SendLiveUpdate()
+    {
+        StartCoroutine(PostMetricsAndWaits());
+    }
     public void SendMetrics()
     {
-        replayCount++;
-        PlayerPrefs.SetInt("ReplayCount", replayCount);
         PlayerPrefs.Save();
-
         StartCoroutine(PostMetricsAndWaits());
     }
 
@@ -120,6 +121,7 @@ public class MetricLogger : MonoBehaviour
     {
         MetricsData data = new MetricsData
         {
+            sessionId = sessionId,
             playerName = PlayerPrefs.GetString("PlayerName", "Player"),
             finalScore = finalScore,
             tasksCompleted = tasksCompleted,
@@ -131,7 +133,6 @@ public class MetricLogger : MonoBehaviour
             peakStress = peakStress,
             avgTaskTime = GetAverageTaskTime(),
             confusionTriggersHit = confusionTriggersHit,
-            replayCount = replayCount
         };
 
         string json = JsonUtility.ToJson(data);
@@ -158,6 +159,7 @@ public class MetricLogger : MonoBehaviour
 [System.Serializable]
 public class MetricsData
 {
+    public string sessionId;
     public string playerName;
     public int finalScore;
     public int tasksCompleted;
@@ -169,5 +171,4 @@ public class MetricsData
     public float peakStress;
     public float avgTaskTime;
     public int confusionTriggersHit;
-    public int replayCount;
 }

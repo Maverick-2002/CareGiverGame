@@ -2,77 +2,74 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Care Rush — Metrics Dashboard</title>
+  <title>Care Rush Dashboard</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f6f9;
-      padding: 30px;
+      background: #ffffff;
+      padding: 20px;
       color: #333;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 6px;
+      color: #333;
     }
 
     p {
       text-align: center;
       color: #888;
-      margin-bottom: 24px;
     }
 
-    button {
+    .refresh {
       display: block;
-      margin: 0 auto 20px;
-      padding: 10px 24px;
-      background: #2563eb;
+      margin: 10px auto 20px;
+      padding: 10px 20px;
+      background: #4CAF50;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
       font-size: 15px;
+    }
+
+    #status {
+      text-align: center;
+      color: #888;
+      margin-bottom: 10px;
+      font-size: 13px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     th {
-      background: #2563eb;
+      background: #4CAF50;
       color: white;
-      padding: 12px;
+      padding: 10px;
       text-align: left;
     }
 
     td {
-      padding: 12px;
-      border-bottom: 1px solid #eee;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
     }
 
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    #status {
-      text-align: center;
-      margin-bottom: 12px;
-      color: #888;
+    tr:nth-child(even) {
+      background: #f9f9f9;
     }
   </style>
 </head>
-
 <body>
 
-  <h1>Care Rush — Metrics Dashboard</h1>
-  <p>Live data from AWS DynamoDB</p>
+  <h1>Care Rush — Player Metrics</h1>
+  <p>Live data from AWS</p>
 
-  <button onclick="loadMetrics()">Refresh Data</button>
+  <button class="refresh" onclick="loadMetrics()">
+    Refresh
+  </button>
 
   <div id="status">Loading...</div>
 
@@ -86,70 +83,63 @@
         <th>Peak Stress</th>
         <th>Empathy Moments</th>
         <th>Time (s)</th>
-        <th>Timestamp</th>
+        <th>Date</th>
       </tr>
     </thead>
-    <tbody id="metricsTable">
-      <tr>
-        <td colspan="8" style="text-align:center">
-          Loading...
-        </td>
-      </tr>
-    </tbody>
+    <tbody id="tableBody"></tbody>
   </table>
 
 <script>
 const API = "https://wyn51co0gh.execute-api.us-east-1.amazonaws.com/prod/metrics";
 
 async function loadMetrics() {
-  const table = document.getElementById("metricsTable");
+  const body = document.getElementById("tableBody");
   const status = document.getElementById("status");
-
-  status.textContent = "Fetching data...";
+  status.textContent = "Loading...";
 
   try {
     const res = await fetch(API);
     const data = await res.json();
 
-    if (!Array.isArray(data) || data.length === 0) {
-      table.innerHTML = `
-        <tr>
-          <td colspan="8" style="text-align:center">
-            No data yet
-          </td>
-        </tr>`;
+    if (!data.length) {
+      body.innerHTML = "<tr><td colspan='8' style='text-align:center'>No data</td></tr>";
       status.textContent = "No sessions found.";
       return;
     }
 
-    table.innerHTML = "";
-    data.forEach(item => {
-      table.innerHTML += `
+    // show latest 10 sessions only
+    const filtered = data
+      .sort((a, b) => 
+        b.timestamp.localeCompare(a.timestamp))
+      .slice(0, 10);
+
+    body.innerHTML = "";
+    filtered.forEach(item => {
+      body.innerHTML += `
         <tr>
           <td>${item.playerName ?? "-"}</td>
           <td>${item.finalScore ?? 0}</td>
           <td>${item.tasksCompleted ?? 0}/3</td>
           <td>${item.correctChoices ?? 0}/3</td>
           <td>${parseFloat(item.peakStress ?? 0).toFixed(1)}%</td>
-          <td>${item.confusionTriggersHit ?? 0}</td>
+          <td>${item.empathyAwareness ?? 
+            item.confusionTriggersHit ?? 0}</td>
           <td>${parseFloat(item.sessionTime ?? 0).toFixed(1)}</td>
-          <td>${item.timestamp
-            ? new Date(item.timestamp).toLocaleString()
-            : "-"}</td>
+          <td>${item.timestamp ? 
+            new Date(item.timestamp).toLocaleString() : "-"}</td>
         </tr>`;
     });
 
-    status.textContent = 
-      "Last updated: " + new Date().toLocaleTimeString();
+    status.textContent = "Last updated: " + 
+      new Date().toLocaleTimeString();
 
   } catch (err) {
     status.textContent = "Error: " + err.message;
-    console.error(err);
   }
 }
 
 window.onload = loadMetrics;
+setInterval(loadMetrics, 5000);
 </script>
-
 </body>
 </html>
