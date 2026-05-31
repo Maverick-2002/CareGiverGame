@@ -126,7 +126,7 @@ async function loadMetrics() {
             item.confusionTriggersHit ?? 0}</td>
           <td>${parseFloat(item.sessionTime ?? 0).toFixed(1)}</td>
           <td>${item.timestamp ? 
-            new Date(item.timestamp).toLocaleString() : "-"}</td>
+            new Date(item.timestamp + "Z").toLocaleString() : "-"}</td>
         </tr>`;
     });
 
