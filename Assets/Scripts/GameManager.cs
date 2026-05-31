@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
         bgmSource.Play();
         globalVolume.profile.TryGet(out vignette);
         globalVolume.profile.TryGet(out colorAdjustments);
-        gameActive = true;
+        gameActive = false;
         UpdateUI();
     }
 
@@ -82,10 +82,13 @@ public class GameManager : MonoBehaviour
         MetricLogger.Instance.TrackStress(grandpaStress);
         MetricLogger.Instance.TrackSessionTime(sessionTime);
         MetricLogger.Instance.TrackScore(score);
-        HandleStressIncrease();
-        UpdateTimers();
-        UpdateTimerUI();
-        CheckGameOver();
+        if (gameActive)
+        {
+            HandleStressIncrease();
+            UpdateTimers();
+            UpdateTimerUI();
+            CheckGameOver();
+        }
     }
 
     private void HandleStressIncrease()

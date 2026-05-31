@@ -14,25 +14,19 @@ public class ThirdPersonCamera : MonoBehaviour
     {
         // camera's parent is the player
         playerBody = transform.parent;
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     void Update()
     {
         if (isUIOpen) return;
 
-        float mouseX = Input.GetAxis("Mouse X")
-            * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y")
-            * mouseSensitivity * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         // vertical — camera only
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -xClamp, xClamp);
-        transform.localRotation =
-            Quaternion.Euler(xRotation, 0f, 0f);
+        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
         // horizontal — rotate whole player body
         playerBody.Rotate(Vector3.up * mouseX);
@@ -41,14 +35,10 @@ public class ThirdPersonCamera : MonoBehaviour
     public static void OpenUI()
     {
         isUIOpen = true;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
     }
 
     public static void CloseUI()
     {
         isUIOpen = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 }

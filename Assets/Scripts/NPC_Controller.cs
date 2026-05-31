@@ -83,7 +83,7 @@ public class NPC_Controller : MonoBehaviour
         choicePanel.SetActive(false);
         feedbackPanel.SetActive(false);
         requestPanel.SetActive(false);
-        grandpaAnimator.SetBool("IsStanding", false);
+        grandpaAnimator.SetBool("isStanding", false);
     }
 
     public void Update()
@@ -96,7 +96,7 @@ public class NPC_Controller : MonoBehaviour
     {
         if (playerEnteredRoom) return;
         playerEnteredRoom = true;
-        StartTask(0);
+
         StartCoroutine(StandUpSequence());
     }
 
@@ -110,7 +110,7 @@ public class NPC_Controller : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
         grandpaAnimator.SetBool("isStanding", true);
-        StartTask(currentTask);
+        StartTask(0);
 
         yield return new WaitForSeconds(3f);
         shouldLookAtPlayer = false;
@@ -126,6 +126,7 @@ public class NPC_Controller : MonoBehaviour
 
     public void StartTask(int index)
     {
+        GameManager.Instance.gameActive = true;
         if (index >= taskItemNames.Length)
         {
             GameManager.Instance.OnTaskCompleted();
