@@ -20,4 +20,9 @@ public class MainMenu : MonoBehaviour
         PlayerPrefs.Save();
         SceneManager.LoadScene(1);
     }
+
+    public void Exit()
+    {
+        Application.Quit();
+    }
 }

@@ -204,23 +204,23 @@ public class GameManager : MonoBehaviour
         tasksCompleted++;
         currentTaskTimer = 0f;
         AddScore(100);
-
+        if (tasksCompleted <= 3)
+        {
+            MetricLogger.Instance.TrackTaskCompleted();
+        }
         if (tasksCompleted >= 3)
         {
             MetricLogger.Instance.TrackScore(score);
             MetricLogger.Instance.TrackSessionTime(sessionTime);
             EndGame(true);
         }
-        MetricLogger.Instance.TrackTaskCompleted();
+        
     }
 
     private void UpdateStressVisuals()
     {
         if (roomLight == null) return;
-
         float t = grandpaStress / maxStress;
-
-        // track peak stress
         if (grandpaStress > peakStress)
             peakStress = grandpaStress;
 
@@ -231,10 +231,7 @@ public class GameManager : MonoBehaviour
             vignette.intensity.value = Mathf.Lerp(0.3f, 0.75f, t);
 
         if (colorAdjustments != null)
-            colorAdjustments.saturation.value =
-                Mathf.Lerp(0f, -50f, t);
-
-        // pitch increase for urgency
+            colorAdjustments.saturation.value = Mathf.Lerp(0f, -50f, t);
         if (bgmSource != null)
             bgmSource.pitch = Mathf.Lerp(1f, 1.4f, t);
     }
@@ -252,10 +249,8 @@ public class GameManager : MonoBehaviour
             NPC_Controller.Instance.PlayEndAnimation(true);
         else
             NPC_Controller.Instance.PlayEndAnimation(false);
-        // save success state
-        PlayerPrefs.SetInt("GameSuccess", success ? 1 : 0);
 
-        // save all metrics
+        PlayerPrefs.SetInt("GameSuccess", success ? 1 : 0);
         PlayerPrefs.SetInt("Score", score);
         PlayerPrefs.SetInt("TasksCompleted", tasksCompleted);
         PlayerPrefs.SetInt("CorrectChoices", correctChoices);
