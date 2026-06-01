@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public Volume globalVolume;
     private Vignette vignette;
     private ColorAdjustments colorAdjustments;
+    private DepthOfField depthOfField;
 
     [Header("Game State")]
     public float grandpaStress = 0f;
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
         bgmSource.Play();
         globalVolume.profile.TryGet(out vignette);
         globalVolume.profile.TryGet(out colorAdjustments);
+        globalVolume.profile.TryGet(out depthOfField);
         gameActive = false;
         UpdateUI();
     }
@@ -89,6 +91,36 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void TriggerBlur()
+    {
+        StartCoroutine(BlurEffect());
+    }
+    private IEnumerator BlurEffect()
+    {
+        depthOfField.active = true;
+        float elapsed = 0f;
+        float duration = 4f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            float blur;
+            if (t < 0.3f)
+            {
+                blur = Mathf.Lerp(0f, 25f, t / 0.3f);
+            }
+            else
+            {
+                blur = Mathf.Lerp(25f, 0f, (t - 0.3f) / 0.7f);
+            }
+
+            depthOfField.gaussianMaxRadius.value = blur;
+
+            yield return null;
+        }
+        depthOfField.gaussianMaxRadius.value = 0f;
+        depthOfField.active = false;
+    }
     private void HandleStressIncrease()
     {
         stressTimer += Time.deltaTime;

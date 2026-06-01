@@ -80,6 +80,7 @@ public class PlayerInteractor : MonoBehaviour
     private IEnumerator ConfusionSequence()
     {
         GameManager.Instance.playerConfusionSFX();
+        GameManager.Instance.TriggerBlur();
         yield return StartCoroutine(FadeOut());
         gameObject.SetActive(false);
         confusionDuplicate.SetActive(true);
