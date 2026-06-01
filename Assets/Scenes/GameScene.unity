@@ -7506,7 +7506,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &205850923
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7773,8 +7773,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 212607018}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.5, y: 0, z: -15.2}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -15.45, y: 0, z: -16.306}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -8675,7 +8675,7 @@ Transform:
   - {fileID: 1959969489}
   - {fileID: 1737190544}
   - {fileID: 573425769}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1229868246}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &216347238
 PrefabInstance:
@@ -14806,8 +14806,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 500}
+  m_AnchoredPosition: {x: 4.5685, y: 6.3959}
+  m_SizeDelta: {x: 899.4925, y: 355.6346}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &406334078
 MonoBehaviour:
@@ -14829,7 +14829,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'I can''t find my medicine.... '
+  m_text: You know what you're looking for... but not where to find it."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 537eb1eef138da7489d2d0c861629654, type: 2}
   m_sharedMaterial: {fileID: -2009162042594335899, guid: 537eb1eef138da7489d2d0c861629654,
@@ -14857,10 +14857,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 50
   m_fontSizeBase: 50
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -40984,6 +40984,7 @@ Transform:
   - {fileID: 164388109}
   - {fileID: 2124729008}
   - {fileID: 776202344}
+  - {fileID: 212607019}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1230509566
@@ -58106,7 +58107,7 @@ MonoBehaviour:
   correctSFX: {fileID: 8300000, guid: 394c01e441a9a3d4eb7ac450ac638171, type: 3}
   wrongSFX: {fileID: 8300000, guid: 07d5d9ba9268c6c40b75d922fed75626, type: 3}
   sfxSource: {fileID: 1817081772}
-  playerConfusion: {fileID: 8300000, guid: b976c22b6c1b8e14cb28f74d40af7bff, type: 3}
+  playerConfusion: {fileID: 8300000, guid: 3b8b0316ae9ce294dab321d9f38c2eae, type: 3}
   heartbeatSFX: {fileID: 8300000, guid: 0e4947c168b47bf41a532b69821a2f58, type: 3}
   stressIncreaseInterval: 5
   stressIncreaseAmount: 5
@@ -74412,5 +74413,4 @@ SceneRoots:
   - {fileID: 877510585}
   - {fileID: 970501211}
   - {fileID: 112613124}
-  - {fileID: 212607019}
   - {fileID: 155739363}

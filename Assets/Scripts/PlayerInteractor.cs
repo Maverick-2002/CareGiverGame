@@ -97,24 +97,12 @@ public class PlayerInteractor : MonoBehaviour
 
     private IEnumerator ConfusionSequence()
     {
-        // fade out
+        GameManager.Instance.playerConfusionSFX();
         yield return StartCoroutine(FadeOut());
         gameObject.SetActive(false);
-
-        // enable duplicate elsewhere
-        if (confusionDuplicate != null)
-            confusionDuplicate.SetActive(true);
-
-        // first message
-        NPC_Controller.Instance.ShowWrongItemFeedback(
-            "You're forgetting where things are kept...");
-        GameManager.Instance.playerConfusionSFX();
-
-        yield return new WaitForSeconds(2f);
-
-        // second message
-        NPC_Controller.Instance.ShowWrongItemFeedback(
-            "Now search the item in the room!");
+        confusionDuplicate.SetActive(true);
+        NPC_Controller.Instance.ShowWrongItemFeedback("You know what you're looking for... but not where to find it.");
+        yield return new WaitForSeconds(3f);
         MetricLogger.Instance.TrackConfusionTriggered();
     }
 

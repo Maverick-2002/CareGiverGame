@@ -240,8 +240,7 @@ public class NPC_Controller : MonoBehaviour
         feedbackPanel.SetActive(false);
     }
 
-    public void ShowWrongItemFeedback(
-        string message = "You're forgetting where things are kept...")
+    public void ShowWrongItemFeedback(string message)
     {
         StartCoroutine(WrongItemMessage(message));
     }
