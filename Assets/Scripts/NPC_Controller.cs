@@ -237,7 +237,7 @@ public class NPC_Controller : MonoBehaviour
         feedbackPanel.SetActive(true);
         feedbackText.text = message;
         feedbackText.color = new Color(0.8f, 0.2f, 0.2f, 1f);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(3f);
         feedbackPanel.SetActive(false);
     }
 

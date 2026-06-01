@@ -85,8 +85,8 @@ public class PlayerInteractor : MonoBehaviour
         gameObject.SetActive(false);
         confusionDuplicate.SetActive(true);
         NPC_Controller.Instance.ShowWrongItemFeedback("He trusts you to find what his mind can no longer hold.");
-        yield return new WaitForSeconds(6f);
         MetricLogger.Instance.TrackConfusionTriggered();
+        
     }
 
     private IEnumerator FadeOut()
