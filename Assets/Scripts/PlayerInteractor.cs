@@ -83,8 +83,8 @@ public class PlayerInteractor : MonoBehaviour
         yield return StartCoroutine(FadeOut());
         gameObject.SetActive(false);
         confusionDuplicate.SetActive(true);
-        NPC_Controller.Instance.ShowWrongItemFeedback("You know what you're looking for... but not where to find it.");
-        yield return new WaitForSeconds(3f);
+        NPC_Controller.Instance.ShowWrongItemFeedback("He trusts you to find what his mind can no longer hold.");
+        yield return new WaitForSeconds(6f);
         MetricLogger.Instance.TrackConfusionTriggered();
     }
 
