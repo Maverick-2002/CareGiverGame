@@ -39,12 +39,14 @@ public class MetricLogger : MonoBehaviour
         {
             Instance = this;
         }
+        sessionId = System.Guid.NewGuid().ToString();
+        isReady = true;
     }
     private void Start()
     {
-        sessionId = System.Guid.NewGuid().ToString();
         taskStartTime = Time.time;
-        isReady = true;
+        SendLiveUpdate();
+        
     }
     public void TrackStress(float currentStress)
     {
@@ -95,10 +97,6 @@ public class MetricLogger : MonoBehaviour
         return total / taskTimes.Count;
     }
     public void SendLiveUpdate()
-    {
-        StartCoroutine(PostMetricsAndWaits());
-    }
-    public void SendMetrics()
     {
         PlayerPrefs.Save();
         StartCoroutine(PostMetricsAndWaits());

@@ -74,6 +74,7 @@ public class NPC_Controller : MonoBehaviour
         feedbackPanel.SetActive(false);
         requestPanel.SetActive(false);
         grandpaAnimator.SetBool("isStanding", false);
+
     }
 
     public void Update()
@@ -177,24 +178,24 @@ public class NPC_Controller : MonoBehaviour
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.ReduceStress(15f);
                 GameManager.Instance.AddScore(50);
-                ShowFeedback("Grandpa feels calm and cared for", new Color(0.2f, 0.8f, 0.3f, 1f));
+                ShowFeedback("Grandpa feels calm and cared for!", new Color(0.2f, 0.8f, 0.3f, 1f));
                 grandpaDialogueText.text = comfortReactions[currentTask];
                 grandpaAnimator.SetTrigger("Idle");
                 grandpaAnimator.SetBool("isStanding", false);
                 break;
 
             case 1:
-                MetricLogger.Instance.TrackCorrectChoice();
+                MetricLogger.Instance.TrackNeutralChoice();
                 GameManager.Instance.AddStress(5f);
-                ShowFeedback("Try to be more empathetic", new Color(0.9f, 0.7f, 0.1f, 1f));
+                ShowFeedback("Try to be more empathetic!", new Color(0.9f, 0.7f, 0.1f, 1f));
                 grandpaDialogueText.text = neutralReactions[currentTask];
                 grandpaAnimator.SetBool("isStanding", true);
                 break;
 
             case 2:
-                MetricLogger.Instance.TrackCorrectChoice();
+                MetricLogger.Instance.TrackWrongChoice();
                 GameManager.Instance.AddStress(20f);
-                ShowFeedback("This response caused distress", new Color(0.8f, 0.2f, 0.2f, 1f));
+                ShowFeedback("He appears confused and upset!", new Color(0.8f, 0.2f, 0.2f, 1f));
                 grandpaDialogueText.text = stressReactions[currentTask];
                 grandpaAnimator.SetTrigger("Angry");
                 break;

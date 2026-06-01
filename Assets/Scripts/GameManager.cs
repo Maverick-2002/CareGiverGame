@@ -207,6 +207,8 @@ public class GameManager : MonoBehaviour
 
         if (tasksCompleted >= 3)
         {
+            MetricLogger.Instance.TrackScore(score);
+            MetricLogger.Instance.TrackSessionTime(sessionTime);
             EndGame(true);
         }
         MetricLogger.Instance.TrackTaskCompleted();
