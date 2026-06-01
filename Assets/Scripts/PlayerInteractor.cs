@@ -92,12 +92,7 @@ public class PlayerInteractor : MonoBehaviour
     private IEnumerator FadeOut()
     {
 
-        Material mat = objectRenderer.material;
-        mat.SetFloat("_Surface", 1); // 0 = opaque, 1 = transparent
-        mat.SetFloat("_Blend", 0);
-        mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
-        mat.renderQueue = 3000;
-
+        Material mat = objectRenderer.sharedMaterial;
         Color startColor = mat.color;
         float duration = 0.8f;
         float elapsed = 0f;
@@ -133,22 +128,22 @@ public class PlayerInteractor : MonoBehaviour
 
     private void ShowHighlight()
     {
-        objectRenderer.material = highlightMaterial;
-        objectRenderer.material.color = Color.yellow;
+        objectRenderer.sharedMaterial = highlightMaterial;
+        objectRenderer.sharedMaterial.color = Color.yellow;
         interactPrompt.SetActive(true);
     }
 
     private void HideHighlight()
     {
-        objectRenderer.material = normalMaterial;
-        objectRenderer.material.color = originalColor;
+        objectRenderer.sharedMaterial = normalMaterial;
+        objectRenderer.sharedMaterial.color = originalColor;
         interactPrompt.SetActive(false);
     }
 
     private IEnumerator WrongItemFeedback()
     {
-        objectRenderer.material.color = Color.red;
+        objectRenderer.sharedMaterial.color = Color.red;
         yield return new WaitForSeconds(0.3f);
-        objectRenderer.material.color = originalColor;
+        objectRenderer.sharedMaterial.color = originalColor;
     }
 }

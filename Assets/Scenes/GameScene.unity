@@ -1987,8 +1987,8 @@ MonoBehaviour:
   isConfusionObject: 1
   confusionDuplicate: {fileID: 870878578}
   confusionTriggerDistance: 1
-  normalMaterial: {fileID: 0}
-  highlightMaterial: {fileID: 0}
+  normalMaterial: {fileID: 2100000, guid: ac21fa7eb65d8f7469864cab8b15d2b5, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: a9829d0e5667eb84eb44e314ca36e8eb, type: 2}
   interactPrompt: {fileID: 364778344}
   playerObj: {fileID: 4956816949278582966}
 --- !u!1001 &62456776
@@ -34795,8 +34795,8 @@ MonoBehaviour:
   isConfusionObject: 0
   confusionDuplicate: {fileID: 0}
   confusionTriggerDistance: 1
-  normalMaterial: {fileID: 0}
-  highlightMaterial: {fileID: 0}
+  normalMaterial: {fileID: 2100000, guid: ac21fa7eb65d8f7469864cab8b15d2b5, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: a9829d0e5667eb84eb44e314ca36e8eb, type: 2}
   interactPrompt: {fileID: 364778344}
   playerObj: {fileID: 4956816949278582966}
 --- !u!1 &1056796413
@@ -39134,8 +39134,8 @@ MonoBehaviour:
   isConfusionObject: 0
   confusionDuplicate: {fileID: 0}
   confusionTriggerDistance: 1
-  normalMaterial: {fileID: 0}
-  highlightMaterial: {fileID: 0}
+  normalMaterial: {fileID: 2100000, guid: 43e39a519cf508a41b0b064e6d9546bf, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: 929df13210b4ad44e8286cd37d2a1824, type: 2}
   interactPrompt: {fileID: 364778344}
   playerObj: {fileID: 4956816949278582966}
 --- !u!1001 &1177112405
@@ -40009,8 +40009,8 @@ MonoBehaviour:
   isConfusionObject: 1
   confusionDuplicate: {fileID: 192279713}
   confusionTriggerDistance: 1.5
-  normalMaterial: {fileID: 0}
-  highlightMaterial: {fileID: 0}
+  normalMaterial: {fileID: 2100000, guid: b62ff571a85f118478d6b1cf1fe96a57, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: 36717f03849d33241b04d28b6c8974bf, type: 2}
   interactPrompt: {fileID: 364778344}
   playerObj: {fileID: 4956816949278582966}
 --- !u!1001 &1208917838
@@ -54546,8 +54546,8 @@ MonoBehaviour:
   isConfusionObject: 1
   confusionDuplicate: {fileID: 6566767547063062510}
   confusionTriggerDistance: 1
-  normalMaterial: {fileID: 0}
-  highlightMaterial: {fileID: 0}
+  normalMaterial: {fileID: 2100000, guid: 43e39a519cf508a41b0b064e6d9546bf, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: 929df13210b4ad44e8286cd37d2a1824, type: 2}
   interactPrompt: {fileID: 364778344}
   playerObj: {fileID: 4956816949278582966}
 --- !u!65 &1686025139
@@ -57198,8 +57198,8 @@ MonoBehaviour:
   isConfusionObject: 0
   confusionDuplicate: {fileID: 0}
   confusionTriggerDistance: 2
-  normalMaterial: {fileID: 0}
-  highlightMaterial: {fileID: 0}
+  normalMaterial: {fileID: 2100000, guid: b62ff571a85f118478d6b1cf1fe96a57, type: 2}
+  highlightMaterial: {fileID: 2100000, guid: 36717f03849d33241b04d28b6c8974bf, type: 2}
   interactPrompt: {fileID: 364778344}
   playerObj: {fileID: 4956816949278582966}
 --- !u!1001 &1777304282

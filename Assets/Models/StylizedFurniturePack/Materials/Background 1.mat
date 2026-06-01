@@ -45,7 +45,7 @@ Material:
     - _Surface: 1
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0.75471693, g: 0.51752836, b: 0.4093983, a: 1}
+    - _Color: {r: 0.75471693, g: 0.5175283, b: 0.40939826, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &7836341587896104666
 MonoBehaviour:
