@@ -177,7 +177,7 @@ public class NPC_Controller : MonoBehaviour
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.ReduceStress(15f);
                 GameManager.Instance.AddScore(50);
-                ShowFeedback("Grandpa feels calm and cared for", Color.green);
+                ShowFeedback("Grandpa feels calm and cared for", new Color(0.2f, 0.8f, 0.3f, 1f));
                 grandpaDialogueText.text = comfortReactions[currentTask];
                 grandpaAnimator.SetTrigger("Idle");
                 grandpaAnimator.SetBool("isStanding", false);
@@ -186,7 +186,7 @@ public class NPC_Controller : MonoBehaviour
             case 1:
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.AddStress(5f);
-                ShowFeedback("Try to be more empathetic", Color.yellow);
+                ShowFeedback("Try to be more empathetic", new Color(0.9f, 0.7f, 0.1f, 1f));
                 grandpaDialogueText.text = neutralReactions[currentTask];
                 grandpaAnimator.SetBool("isStanding", true);
                 break;
@@ -194,7 +194,7 @@ public class NPC_Controller : MonoBehaviour
             case 2:
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.AddStress(20f);
-                ShowFeedback("This response caused distress", Color.red);
+                ShowFeedback("This response caused distress", new Color(0.8f, 0.2f, 0.2f, 1f));
                 grandpaDialogueText.text = stressReactions[currentTask];
                 grandpaAnimator.SetTrigger("Angry");
                 break;
@@ -235,7 +235,7 @@ public class NPC_Controller : MonoBehaviour
     {
         feedbackPanel.SetActive(true);
         feedbackText.text = message;
-        feedbackText.color = Color.red;
+        feedbackText.color = new Color(0.8f, 0.2f, 0.2f, 1f);
         yield return new WaitForSeconds(1.5f);
         feedbackPanel.SetActive(false);
     }

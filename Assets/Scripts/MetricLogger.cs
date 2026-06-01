@@ -10,25 +10,24 @@ public class MetricLogger : MonoBehaviour
     [Header("AWS Settings")]
     public string apiEndpoint = "YOUR_API_GATEWAY_URL";
 
-    // Gameplay Metrics
+    [Header("Gameplay Metrics")]
+    private string sessionId = "";
     private int finalScore = 0;
     private int tasksCompleted = 0;
     private int incorrectPickups = 0;
     private float sessionTime = 0f;
+    private List<float> taskTimes = new List<float>();
+    private float taskStartTime = 0f;
 
-    // Behavioral Metrics
+    [Header("Choices Metrics")]
     private int correctChoices = 0;
     private int wrongChoices = 0;
     private int neutralChoices = 0;
     private float peakStress = 0f;
-    private string sessionId = "";
-    // Engagement Metrics
     private int confusionTriggersHit = 0;
-    public bool isReady = false;
 
-    // Task timing
-    private List<float> taskTimes = new List<float>();
-    private float taskStartTime = 0f;
+    [Header("Data to AWS")]
+    public bool isReady = false;
 
     private void Awake()
     {
@@ -41,21 +40,17 @@ public class MetricLogger : MonoBehaviour
             Instance = this;
         }
     }
-
     private void Start()
     {
         sessionId = System.Guid.NewGuid().ToString();
         taskStartTime = Time.time;
         isReady = true;
     }
-
-    // called every frame from GameManager
     public void TrackStress(float currentStress)
     {
         if (currentStress > peakStress)
             peakStress = currentStress;
     }
-
     public void TrackTaskCompleted()
     {
         tasksCompleted++;
@@ -63,42 +58,34 @@ public class MetricLogger : MonoBehaviour
         taskTimes.Add(timeTaken);
         taskStartTime = Time.time;
     }
-
     public void TrackIncorrectPickup()
     {
         incorrectPickups++;
     }
-
     public void TrackCorrectChoice()
     {
         correctChoices++;
     }
-
     public void TrackWrongChoice()
     {
         wrongChoices++;
     }
-
     public void TrackNeutralChoice()
     {
         neutralChoices++;
     }
-
     public void TrackConfusionTriggered()
     {
         confusionTriggersHit++;
     }
-
     public void TrackScore(int score)
     {
         finalScore = score;
     }
-
     public void TrackSessionTime(float time)
     {
         sessionTime = time;
     }
-
     private float GetAverageTaskTime()
     {
         if (taskTimes.Count == 0) return 0f;
@@ -116,7 +103,6 @@ public class MetricLogger : MonoBehaviour
         PlayerPrefs.Save();
         StartCoroutine(PostMetricsAndWaits());
     }
-
     public IEnumerator PostMetricsAndWaits()
     {
         MetricsData data = new MetricsData
@@ -134,15 +120,11 @@ public class MetricLogger : MonoBehaviour
             avgTaskTime = GetAverageTaskTime(),
             confusionTriggersHit = confusionTriggersHit,
         };
-
         string json = JsonUtility.ToJson(data);
         Debug.Log("Sending: " + json);
-
-        using (UnityWebRequest request = UnityWebRequest.Post(
-            apiEndpoint, json, "application/json"))
+        using (UnityWebRequest request = UnityWebRequest.Post(apiEndpoint, json, "application/json"))
         {
             yield return request.SendWebRequest();
-
             if (request.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("SUCCESS: " + request.downloadHandler.text);

@@ -29,11 +29,7 @@ public class ResultScreen : MonoBehaviour
 
     private void Start()
     {
-        // get result from PlayerPrefs
-        isSuccess = PlayerPrefs.GetInt(
-            "GameSuccess", 0) == 1;
-
-        // hide all panels
+        isSuccess = PlayerPrefs.GetInt("GameSuccess", 0) == 1;
         successPanel.SetActive(false);
         failPanel.SetActive(false);
         metricsPanel.SetActive(false);
@@ -43,7 +39,6 @@ public class ResultScreen : MonoBehaviour
 
     private IEnumerator FadeIn()
     {
-        // fade in
         while (canvasGroup.alpha < 1f)
         {
             canvasGroup.alpha += Time.deltaTime * 0.8f;
@@ -57,58 +52,34 @@ public class ResultScreen : MonoBehaviour
         else
             StartCoroutine(ShowFail());
     }
-
     private IEnumerator ShowSuccess()
     {
         successPanel.SetActive(true);
         yield return new WaitForSeconds(1.5f);
     }
-
     private IEnumerator ShowFail()
     {
         failPanel.SetActive(true);
         yield return new WaitForSeconds(1.5f);
     }
-
-    private IEnumerator TypeText(
-        TextMeshProUGUI textObj, string message)
-    {
-        textObj.text = "";
-        foreach (char c in message)
-        {
-            textObj.text += c;
-            yield return new WaitForSeconds(0.03f);
-        }
-    }
-
     public void LoadMetrics()
     {
         string player = PlayerPrefs.GetString("PlayerName","");
         int score = PlayerPrefs.GetInt("Score", 0);
-        int tasks = PlayerPrefs.GetInt(
-            "TasksCompleted", 0);
-        int correct = PlayerPrefs.GetInt(
-            "CorrectChoices", 0);
-        int wrong = PlayerPrefs.GetInt(
-            "WrongChoices", 0);
-        float time = PlayerPrefs.GetFloat(
-            "SessionTime", 0f);
-        float peakStress = PlayerPrefs.GetFloat(
-            "PeakStress", 0f);
-        int confusions = PlayerPrefs.GetInt(
-            "ConfusionTriggers", 0);
+        int tasks = PlayerPrefs.GetInt("TasksCompleted", 0);
+        int correct = PlayerPrefs.GetInt("CorrectChoices", 0);
+        int wrong = PlayerPrefs.GetInt("WrongChoices", 0);
+        float time = PlayerPrefs.GetFloat("SessionTime", 0f);
+        float peakStress = PlayerPrefs.GetFloat("PeakStress", 0f);
+        int confusions = PlayerPrefs.GetInt("ConfusionTriggers", 0);
 
         scoreText.text = "Final Score: " + score;
         tasksText.text = "Tasks Completed: " + tasks + "/3";
-        choicesText.text = "Empathetic Responses: "
-            + correct + "/3";
-        timeText.text = "Completion Time: " +
-            Mathf.FloorToInt(time) + "s";
-        peakStressText.text = "Peak Stress: " +
-            Mathf.FloorToInt(peakStress) + "%";
+        choicesText.text = "Empathetic Responses: " + correct + "/3";
+        timeText.text = "Completion Time: " + Mathf.FloorToInt(time) + "s";
+        peakStressText.text = "Peak Stress: " + Mathf.FloorToInt(peakStress) + "%";
         playerName.text = "Player Name: " + player;
 
-        // empathy rating
         string rating = "";
         if (correct == 3)
             rating = "Compassionate Caregiver";
@@ -119,14 +90,8 @@ public class ResultScreen : MonoBehaviour
         else
             rating = "Every Day Is A New Chance";
 
-        empathyRatingText.text = rating;
+        empathyRatingText.text = "Empathy Awareness: " + rating;
     }
-
-    public void OnReplay()
-    {
-        SceneManager.LoadScene(1);
-    }
-
     public void OnMainMenu()
     {
         SceneManager.LoadScene(0);

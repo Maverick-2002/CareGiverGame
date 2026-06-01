@@ -31,31 +31,15 @@ public class PlayerInteractor : MonoBehaviour
     private void Start()
     {
         objectRenderer = GetComponent<Renderer>();
-
-        if (objectRenderer != null)
-            originalColor = objectRenderer.material.color;
-
-
-        if (playerObj != null)
-            player = playerObj.transform;
-
-        if (interactPrompt != null)
-            interactPrompt.SetActive(false);
-
-        // hide duplicate at start
-        if (confusionDuplicate != null)
-            confusionDuplicate.SetActive(false);
+        originalColor = objectRenderer.material.color;
+        player = playerObj.transform;
+        interactPrompt.SetActive(false);
+        confusionDuplicate.SetActive(false);
     }
 
     private void Update()
     {
-        if (!GameManager.Instance.gameActive) return;
-        if (player == null) return;
-
-        float dist = Vector3.Distance(
-            transform.position, player.position);
-
-        // confusion object logic
+        float dist = Vector3.Distance(transform.position, player.position);
         if (isConfusionObject && !confusionTriggered)
         {
             if (dist <= confusionTriggerDistance)
@@ -66,7 +50,6 @@ public class PlayerInteractor : MonoBehaviour
             }
         }
 
-        // normal interaction logic
         if (dist <= interactDistance)
         {
             if (!playerNearby)
@@ -74,7 +57,6 @@ public class PlayerInteractor : MonoBehaviour
                 playerNearby = true;
                 ShowHighlight();
             }
-
             if (Input.GetKeyDown(KeyCode.E))
             {
                 OnInteract();
@@ -108,11 +90,8 @@ public class PlayerInteractor : MonoBehaviour
 
     private IEnumerator FadeOut()
     {
-        if (objectRenderer == null) yield break;
 
         Material mat = objectRenderer.material;
-
-        // set material to transparent mode
         mat.SetFloat("_Surface", 1); // 0 = opaque, 1 = transparent
         mat.SetFloat("_Blend", 0);
         mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
@@ -142,7 +121,6 @@ public class PlayerInteractor : MonoBehaviour
             HideHighlight();
             gameObject.SetActive(false);
             NPC_Controller.Instance.OnCorrectItemFound();
-           // GameManager.Instance.AddScore(100);
         }
         else
         {
@@ -154,34 +132,22 @@ public class PlayerInteractor : MonoBehaviour
 
     private void ShowHighlight()
     {
-        if (highlightMaterial != null)
-            objectRenderer.material = highlightMaterial;
-        else if (objectRenderer != null)
-            objectRenderer.material.color = Color.yellow;
-
-        if (interactPrompt != null)
-            interactPrompt.SetActive(true);
+        objectRenderer.material = highlightMaterial;
+        objectRenderer.material.color = Color.yellow;
+        interactPrompt.SetActive(true);
     }
 
     private void HideHighlight()
     {
-        if (normalMaterial != null)
-            objectRenderer.material = normalMaterial;
-        else if (objectRenderer != null)
-            objectRenderer.material.color = originalColor;
-
-        if (interactPrompt != null)
-            interactPrompt.SetActive(false);
+        objectRenderer.material = normalMaterial;
+        objectRenderer.material.color = originalColor;
+        interactPrompt.SetActive(false);
     }
 
     private IEnumerator WrongItemFeedback()
     {
-        if (objectRenderer != null)
-            objectRenderer.material.color = Color.red;
-
+        objectRenderer.material.color = Color.red;
         yield return new WaitForSeconds(0.3f);
-
-        if (objectRenderer != null)
-            objectRenderer.material.color = originalColor;
+        objectRenderer.material.color = originalColor;
     }
 }

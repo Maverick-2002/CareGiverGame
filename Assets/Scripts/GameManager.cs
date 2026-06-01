@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI timerText;
     public Slider stressSlider;
     public GameObject gameOverPanel;
-    public GameObject successPanel;
 
     [Header("Stress Visuals")]
     public Light roomLight;
