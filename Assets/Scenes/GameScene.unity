@@ -12549,7 +12549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d2ee4175f6a9e745a59eea670c1cea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 200
+  mouseSensitivity: 100
   xClamp: 80
 --- !u!114 &330585549
 MonoBehaviour:
@@ -16657,6 +16657,7 @@ GameObject:
   - component: {fileID: 457616708}
   - component: {fileID: 457616709}
   - component: {fileID: 457616710}
+  - component: {fileID: 457616711}
   m_Layer: 0
   m_Name: Grandpa
   m_TagString: Untagged
@@ -16698,16 +16699,16 @@ MonoBehaviour:
   - FamilyPhoto
   - Notepad
   taskDialogues:
-  - I can't find my medicine...
+  - Did you take my medicine?!.
   - Where is my family photo? I need to see it...
   - Can you get me a notepad please...
   confusionDialogues:
-  - Did you take my medicine?!
+  - I can't find my medicine..
   - Someone moved my photo!
   - I asked for notepad ages ago!
   task0Choices:
-  - Here it is, take your time
   - You forgot where you kept it
+  - Here it is, take your time
   - You need to be more careful
   task1Choices:
   - It was right there the whole time
@@ -16715,8 +16716,8 @@ MonoBehaviour:
   - You should keep track of your things
   task2Choices:
   - You keep forgetting things, write it quickly
-  - You should keep it with yourself all the time
   - Here's your notepad, no rush
+  - You should keep it with yourself all the time
   entryDialogue: Oh... someone's here.
   comfortReactions:
   - Thank you so much beta...
@@ -16730,6 +16731,7 @@ MonoBehaviour:
   - You don't understand...
   - Leave me alone...
   - Nobody listens to me...
+  choiceEffects: 010000000000000002000000
   requestPanel: {fileID: 758259037}
   grandpaDialogueText: {fileID: 1369240770}
   choicePanel: {fileID: 1397053728}
@@ -16747,6 +16749,15 @@ MonoBehaviour:
   stress: 0
   playerTransform: {fileID: 5459734367808920063}
   playerEnteredRoom: 0
+  npcVoice: {fileID: 457616711}
+  entryVoiceClip: {fileID: 8300000, guid: 74006b4ec0ad6014fa45247c1619bb50, type: 3}
+  taskVoices:
+  - taskClip: {fileID: 8300000, guid: 713e218f2adbc3d4b8f71aaba1ff806b, type: 3}
+    confusionClip: {fileID: 8300000, guid: c8adfcbc56954094385e626f78eb8dac, type: 3}
+  - taskClip: {fileID: 8300000, guid: 426db4ed754d286408cb7b292f71fa9a, type: 3}
+    confusionClip: {fileID: 8300000, guid: 324fc87fca7da1547aece8cb6cf51c68, type: 3}
+  - taskClip: {fileID: 8300000, guid: c1dd45735a01b4948aa8286ac7cc2fcd, type: 3}
+    confusionClip: {fileID: 8300000, guid: e0ad50eca9c47594097baff594c2ac47, type: 3}
 --- !u!95 &457616710
 Animator:
   serializedVersion: 5
@@ -16768,6 +16779,102 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!82 &457616711
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457616707}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &458046418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -58150,7 +58257,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -69926,7 +70033,7 @@ Transform:
   m_GameObject: {fileID: 6566767547063062510}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000029802322, y: 0.7071067, z: 0.7071068, w: -0.000000029802322}
-  m_LocalPosition: {x: -3.0530574, y: -0.23956525, z: 4.585911}
+  m_LocalPosition: {x: -0.199, y: -0.235, z: 4.291}
   m_LocalScale: {x: 10.028071, y: 10.028072, z: 10.028072}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -72168,7 +72275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de962b35d2b141a4eb1db749a4aff7d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 3
 --- !u!143 &5459734367808920067
 CharacterController:
   m_ObjectHideFlags: 0

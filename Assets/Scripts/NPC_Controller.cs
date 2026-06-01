@@ -25,7 +25,7 @@ public class NPC_Controller : MonoBehaviour
     public string[] neutralReactions;
     public string[] stressReactions;
     private string[][] responseChoices;
-    private int[] choiceEffects = { 0, 1, 2 };
+    public int[] choiceEffects = { 0, 1, 2 };
     private int currentTask = 0;
 
     [Header("UI References")]
@@ -45,6 +45,10 @@ public class NPC_Controller : MonoBehaviour
     [Header("Entry Animation")]
     public bool playerEnteredRoom = false;
 
+    [Header("Voice")]
+    public AudioSource npcVoice;
+    public AudioClip entryVoiceClip;
+    public TaskVoice[] taskVoices;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -90,6 +94,7 @@ public class NPC_Controller : MonoBehaviour
         yield return new WaitForSeconds(1f);
         requestPanel.SetActive(true);
         grandpaDialogueText.text = entryDialogue;
+        npcVoice.PlayOneShot(entryVoiceClip);
         grandpaAnimator.SetTrigger("StandUp");
 
         yield return new WaitForSeconds(2f);
@@ -112,6 +117,7 @@ public class NPC_Controller : MonoBehaviour
             return;
         }
         requestPanel.SetActive(true);
+        npcVoice.PlayOneShot(taskVoices[index].taskClip);
         grandpaDialogueText.text = taskDialogues[index];
 
         if (MetricLogger.Instance.isReady)
@@ -122,10 +128,10 @@ public class NPC_Controller : MonoBehaviour
     private IEnumerator ConfusionEvent()
     {
         yield return new WaitForSeconds(7f);
+        npcVoice.PlayOneShot(taskVoices[currentTask].confusionClip);
         grandpaDialogueText.text = confusionDialogues[currentTask];
         GameManager.Instance.AddStress(10f);
         MetricLogger.Instance.SendLiveUpdate();
-
         yield return new WaitForSeconds(10f);
         grandpaDialogueText.text = taskDialogues[currentTask];
     }
@@ -143,8 +149,7 @@ public class NPC_Controller : MonoBehaviour
         if (shouldLookAtPlayer)
         {
             grandpaAnimator.SetLookAtWeight(1f);
-            grandpaAnimator.SetLookAtPosition(
-                playerTransform.position + Vector3.up * 1.6f);
+            grandpaAnimator.SetLookAtPosition(playerTransform.position + Vector3.up * 1.6f);
         }
     }
 
@@ -152,7 +157,6 @@ public class NPC_Controller : MonoBehaviour
     {
         choicePanel.SetActive(true);
         ThirdPersonCamera.OpenUI();
-
         for (int i = 0; i < choiceButtons.Length; i++)
         {
             int index = i;
@@ -167,7 +171,6 @@ public class NPC_Controller : MonoBehaviour
     {
         choicePanel.SetActive(false);
         ThirdPersonCamera.CloseUI();
-
         switch (choiceEffects[choiceIndex])
         {
             case 0:
@@ -178,7 +181,6 @@ public class NPC_Controller : MonoBehaviour
                 grandpaDialogueText.text = comfortReactions[currentTask];
                 grandpaAnimator.SetTrigger("Idle");
                 grandpaAnimator.SetBool("isStanding", false);
-
                 break;
 
             case 1:
@@ -197,7 +199,6 @@ public class NPC_Controller : MonoBehaviour
                 grandpaAnimator.SetTrigger("Angry");
                 break;
         }
-
         MetricLogger.Instance.SendLiveUpdate();
         StartCoroutine(NextTask());
     }
@@ -249,5 +250,12 @@ public class NPC_Controller : MonoBehaviour
         {
             StartTask(currentTask);
         }
+    }
+
+    [System.Serializable]
+    public class TaskVoice
+    {
+        public AudioClip taskClip;
+        public AudioClip confusionClip;
     }
 }

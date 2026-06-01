@@ -10,7 +10,6 @@ using UnityEngine.Rendering.Universal;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
     public Volume globalVolume;
     private Vignette vignette;
     private ColorAdjustments colorAdjustments;
@@ -200,7 +199,7 @@ public class GameManager : MonoBehaviour
 
         if (colorAdjustments != null)
             colorAdjustments.saturation.value =
-                Mathf.Lerp(0f, -100f, t);
+                Mathf.Lerp(0f, -50f, t);
 
         // pitch increase for urgency
         if (bgmSource != null)
@@ -216,7 +215,6 @@ public class GameManager : MonoBehaviour
     private void EndGame(bool success)
     {
         gameActive = false;
-        ThirdPersonCamera.OpenUI();
         if (success)
             NPC_Controller.Instance.PlayEndAnimation(true);
         else
