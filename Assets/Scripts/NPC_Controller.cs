@@ -70,6 +70,7 @@ public class NPC_Controller : MonoBehaviour
 
     private void Start()
     {
+        shouldLookAtPlayer = false;
         choicePanel.SetActive(false);
         feedbackPanel.SetActive(false);
         requestPanel.SetActive(false);
@@ -197,7 +198,7 @@ public class NPC_Controller : MonoBehaviour
                 GameManager.Instance.AddStress(20f);
                 ShowFeedback("He appears confused and upset!", new Color(0.8f, 0.2f, 0.2f, 1f));
                 grandpaDialogueText.text = stressReactions[currentTask];
-                grandpaAnimator.SetTrigger("Angry");
+                grandpaAnimator.SetTrigger("Confused");
                 break;
         }
         MetricLogger.Instance.SendLiveUpdate();
@@ -216,7 +217,11 @@ public class NPC_Controller : MonoBehaviour
     {
         shouldLookAtPlayer = false;
         if (success)
+        {
             grandpaAnimator.SetTrigger("Happy");
+            shouldLookAtPlayer = true;
+        }
+            
         else
             grandpaAnimator.SetTrigger("Sad");
     }
