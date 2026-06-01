@@ -10,44 +10,22 @@ public class NPC_Controller : MonoBehaviour
     private bool shouldLookAtPlayer = false;
 
     [Header("Tasks")]
-    public string[] taskItemNames = {
-        "Medicine",
-        "FamilyPhoto",
-        "Notepad"
-    };
+    public string[] taskItemNames;
+    public string[] taskDialogues;
+    public string[] confusionDialogues;
 
-    public string[] taskDialogues = {
-        "I can't find my medicine...",
-        "Where is my family photo? I need to see it...",
-        "Can you get me a notepad please..."
-    };
+    [Header("Response Choices")]
+    public string[] task0Choices;
+    public string[] task1Choices;
+    public string[] task2Choices;
 
-    public string[] confusionDialogues = {
-        "Did you take my medicine?!",
-        "Someone moved my photo!",
-        "I asked for notepad ages ago!"
-    };
-
-    private string[][] responseChoices = {
-        new string[] {
-            "Here it is, take your time",
-            "You forgot where you kept it",
-            "You need to be more careful"
-        },
-        new string[] {
-            "Here's your photo, your family loves you",
-            "It was right there the whole time",
-            "You should keep track of your things"
-        },
-        new string[] {
-            "Here's your notepad, no rush",
-            "You keep forgetting things, write it quickly",
-            "You should keep it with yourself all the time"
-        }
-    };
-
+    [Header("Reaction Dialogues")]
+    public string entryDialogue;
+    public string[] comfortReactions;
+    public string[] neutralReactions;
+    public string[] stressReactions;
+    private string[][] responseChoices;
     private int[] choiceEffects = { 0, 1, 2 };
-
     private int currentTask = 0;
 
     [Header("UI References")]
@@ -63,6 +41,7 @@ public class NPC_Controller : MonoBehaviour
     public Animator grandpaAnimator;
     public float stress;
     public Transform playerTransform;
+
     [Header("Entry Animation")]
     public bool playerEnteredRoom = false;
 
@@ -76,6 +55,13 @@ public class NPC_Controller : MonoBehaviour
         {
             Instance = this;
         }
+
+        responseChoices = new string[][]
+        {
+            task0Choices,
+            task1Choices,
+            task2Choices
+        };
     }
 
     private void Start()
@@ -96,31 +82,24 @@ public class NPC_Controller : MonoBehaviour
     {
         if (playerEnteredRoom) return;
         playerEnteredRoom = true;
-
         StartCoroutine(StandUpSequence());
     }
 
     IEnumerator StandUpSequence()
     {
         yield return new WaitForSeconds(1f);
-
         requestPanel.SetActive(true);
-        grandpaDialogueText.text = "Oh... someone's here.";
+        grandpaDialogueText.text = entryDialogue;
         grandpaAnimator.SetTrigger("StandUp");
 
         yield return new WaitForSeconds(2f);
         grandpaAnimator.SetBool("isStanding", true);
+        shouldLookAtPlayer = true;
         StartTask(0);
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(7f);
         shouldLookAtPlayer = false;
         grandpaAnimator.SetTrigger("isSearching");
-
-        yield return new WaitForSeconds(6f);
-        grandpaAnimator.SetTrigger("Confused");
-
-
-
 
     }
 
@@ -134,21 +113,21 @@ public class NPC_Controller : MonoBehaviour
         }
         requestPanel.SetActive(true);
         grandpaDialogueText.text = taskDialogues[index];
-        shouldLookAtPlayer = true;
+
         if (MetricLogger.Instance.isReady)
             MetricLogger.Instance.SendLiveUpdate();
-
-        
         StartCoroutine(ConfusionEvent());
     }
 
     private IEnumerator ConfusionEvent()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(7f);
         grandpaDialogueText.text = confusionDialogues[currentTask];
         GameManager.Instance.AddStress(10f);
-       
         MetricLogger.Instance.SendLiveUpdate();
+
+        yield return new WaitForSeconds(10f);
+        grandpaDialogueText.text = taskDialogues[currentTask];
     }
 
     public void OnCorrectItemFound()
@@ -158,14 +137,17 @@ public class NPC_Controller : MonoBehaviour
         MetricLogger.Instance.SendLiveUpdate();
         ShowChoicePanel();
     }
+
     private void OnAnimatorIK(int layerIndex)
     {
         if (shouldLookAtPlayer)
         {
             grandpaAnimator.SetLookAtWeight(1f);
-            grandpaAnimator.SetLookAtPosition(playerTransform.position + Vector3.up * 1.6f);
+            grandpaAnimator.SetLookAtPosition(
+                playerTransform.position + Vector3.up * 1.6f);
         }
     }
+
     private void ShowChoicePanel()
     {
         choicePanel.SetActive(true);
@@ -174,8 +156,7 @@ public class NPC_Controller : MonoBehaviour
         for (int i = 0; i < choiceButtons.Length; i++)
         {
             int index = i;
-            choiceTexts[i].text =
-                responseChoices[currentTask][i];
+            choiceTexts[i].text = responseChoices[currentTask][i];
             choiceButtons[i].onClick.RemoveAllListeners();
             choiceButtons[i].onClick.AddListener(
                 () => OnChoiceSelected(index));
@@ -193,24 +174,27 @@ public class NPC_Controller : MonoBehaviour
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.ReduceStress(15f);
                 GameManager.Instance.AddScore(50);
-                ShowFeedback("Grandpa feels calm and cared for",Color.green);
-                grandpaDialogueText.text ="Thank you so much beta...";
-                
+                ShowFeedback("Grandpa feels calm and cared for", Color.green);
+                grandpaDialogueText.text = comfortReactions[currentTask];
+                grandpaAnimator.SetTrigger("Idle");
+                grandpaAnimator.SetBool("isStanding", false);
+
                 break;
 
             case 1:
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.AddStress(5f);
-                ShowFeedback("Try to be more empathetic",Color.yellow);
-                grandpaDialogueText.text = "Oh... okay.";
+                ShowFeedback("Try to be more empathetic", Color.yellow);
+                grandpaDialogueText.text = neutralReactions[currentTask];
+                grandpaAnimator.SetBool("isStanding", true);
                 break;
 
             case 2:
                 MetricLogger.Instance.TrackCorrectChoice();
                 GameManager.Instance.AddStress(20f);
                 ShowFeedback("This response caused distress", Color.red);
-                grandpaDialogueText.text ="You don't understand...";
-               
+                grandpaDialogueText.text = stressReactions[currentTask];
+                grandpaAnimator.SetTrigger("Angry");
                 break;
         }
 
@@ -225,6 +209,7 @@ public class NPC_Controller : MonoBehaviour
         feedbackText.color = color;
         StartCoroutine(HideFeedback());
     }
+
     public void PlayEndAnimation(bool success)
     {
         shouldLookAtPlayer = false;

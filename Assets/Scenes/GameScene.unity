@@ -7506,7 +7506,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &205850923
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16705,6 +16705,31 @@ MonoBehaviour:
   - Did you take my medicine?!
   - Someone moved my photo!
   - I asked for notepad ages ago!
+  task0Choices:
+  - Here it is, take your time
+  - You forgot where you kept it
+  - You need to be more careful
+  task1Choices:
+  - It was right there the whole time
+  - Here's your photo, your family loves you
+  - You should keep track of your things
+  task2Choices:
+  - You keep forgetting things, write it quickly
+  - You should keep it with yourself all the time
+  - Here's your notepad, no rush
+  entryDialogue: Oh... someone's here.
+  comfortReactions:
+  - Thank you so much beta...
+  - Oh my photo, thank you dear...
+  - You're so kind, thank you...
+  neutralReactions:
+  - Oh... okay.
+  - I suppose so...
+  - Alright then...
+  stressReactions:
+  - You don't understand...
+  - Leave me alone...
+  - Nobody listens to me...
   requestPanel: {fileID: 758259037}
   grandpaDialogueText: {fileID: 1369240770}
   choicePanel: {fileID: 1397053728}
@@ -54379,7 +54404,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1686025137
 Transform:
   m_ObjectHideFlags: 0
@@ -54403,7 +54428,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1686025136}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b3c28532d4a27254ca4cf0f91298206c, type: 3}
   m_Name: 
@@ -59654,14 +59679,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 0.8627451, g: 0.9411765, b: 1, a: 0.7372549}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 951352f31055aae46b6e9786313c632d, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
