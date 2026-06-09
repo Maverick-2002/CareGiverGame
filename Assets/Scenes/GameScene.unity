@@ -68033,7 +68033,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224086071944598269}
-  - component: {fileID: 114809824487770635}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -68441,32 +68440,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 5
---- !u!114 &114809824487770635
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1391228690004115}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 15
-    m_Right: 15
-    m_Top: 10
-    m_Bottom: 10
-  m_ChildAlignment: 4
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
 --- !u!114 &114813538548842871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68714,10 +68687,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 224086071944598269}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 15, y: -163.22}
+  m_SizeDelta: {x: 756, y: 306.42}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!33 &242681743915022124
 MeshFilter:
@@ -69984,10 +69957,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 224086071944598269}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 392.99997, y: -163.22}
+  m_SizeDelta: {x: 786, y: 326.42}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &2736028120702377125
 Transform:
