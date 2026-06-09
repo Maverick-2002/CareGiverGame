@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -43,6 +44,13 @@ public class GameManager : MonoBehaviour
     public AudioClip heartbeatSFX;
     private bool heartbeatPlaying = false;
 
+    [Header("Unity Events")]
+    public UnityEvent<float> OnStressChanged;
+    public UnityEvent<int> OnScoreChanged;
+    public UnityEvent OnTaskCompletedEvent;
+    public UnityEvent<bool> OnGameEnded;
+    public UnityEvent OnIncorrectPickupEvent;
+
     // metrics
     private int incorrectPickups = 0;
     private int correctChoices = 0;
@@ -63,6 +71,11 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+        OnStressChanged = new UnityEvent<float>();
+        OnScoreChanged = new UnityEvent<int>();
+        OnTaskCompletedEvent = new UnityEvent();
+        OnGameEnded = new UnityEvent<bool>();
+        OnIncorrectPickupEvent = new UnityEvent();
     }
 
     private void Start()
@@ -79,27 +92,24 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        MetricLogger.Instance.TrackStress(grandpaStress);
-        MetricLogger.Instance.TrackSessionTime(sessionTime);
-        MetricLogger.Instance.TrackScore(score);
-        if (gameActive)
-        {
-            HandleStressIncrease();
-            UpdateTimers();
-            UpdateTimerUI();
-            CheckGameOver();
-        }
+        if (!gameActive) return;
+        HandleStressIncrease();
+        UpdateTimers();
+        UpdateTimerUI();
+        CheckGameOver();
     }
 
     public void TriggerBlur()
     {
         StartCoroutine(BlurEffect());
     }
+
     private IEnumerator BlurEffect()
     {
         depthOfField.active = true;
         float elapsed = 0f;
         float duration = 4f;
+
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
@@ -113,14 +123,14 @@ public class GameManager : MonoBehaviour
             {
                 blur = Mathf.Lerp(25f, 0f, (t - 0.3f) / 0.7f);
             }
-
             depthOfField.gaussianMaxRadius.value = blur;
-
             yield return null;
         }
+
         depthOfField.gaussianMaxRadius.value = 0f;
         depthOfField.active = false;
     }
+
     private void HandleStressIncrease()
     {
         stressTimer += Time.deltaTime;
@@ -129,7 +139,6 @@ public class GameManager : MonoBehaviour
             stressTimer = 0f;
             AddStress(stressIncreaseAmount);
         }
-        
     }
 
     private void UpdateTimers()
@@ -148,20 +157,22 @@ public class GameManager : MonoBehaviour
     private void CheckGameOver()
     {
         if (grandpaStress >= maxStress)
-        {
             EndGame(false);
-        }
     }
+
     public void playerConfusionSFX()
     {
-       sfxSource.PlayOneShot(playerConfusion);
+        sfxSource.PlayOneShot(playerConfusion);
     }
+
     public void AddStress(float amount)
     {
         grandpaStress = Mathf.Clamp(grandpaStress + amount, 0f, maxStress);
         wrongChoices++;
         HandleHeartbeat();
+        OnStressChanged?.Invoke(grandpaStress);
     }
+
     private void HandleHeartbeat()
     {
         if (grandpaStress > 70f && !heartbeatPlaying)
@@ -178,10 +189,12 @@ public class GameManager : MonoBehaviour
             sfxSource.Stop();
         }
     }
+
     public void ReduceStress(float amount)
     {
-        grandpaStress = Mathf.Clamp( grandpaStress - amount, 0f, maxStress);
+        grandpaStress = Mathf.Clamp(grandpaStress - amount, 0f, maxStress);
         correctChoices++;
+        OnStressChanged?.Invoke(grandpaStress);
     }
 
     public void AddScore(int amount)
@@ -189,6 +202,7 @@ public class GameManager : MonoBehaviour
         score += amount;
         scoreText.text = "Score: " + score;
         sfxSource.PlayOneShot(correctSFX);
+        OnScoreChanged?.Invoke(score);
     }
 
     public void OnIncorrectPickup()
@@ -196,7 +210,7 @@ public class GameManager : MonoBehaviour
         incorrectPickups++;
         AddStress(5f);
         sfxSource.PlayOneShot(wrongSFX);
-        MetricLogger.Instance.TrackIncorrectPickup();
+        OnIncorrectPickupEvent?.Invoke();
     }
 
     public void OnTaskCompleted()
@@ -204,23 +218,25 @@ public class GameManager : MonoBehaviour
         tasksCompleted++;
         currentTaskTimer = 0f;
         AddScore(100);
+
         if (tasksCompleted <= 3)
         {
-            MetricLogger.Instance.TrackTaskCompleted();
+           OnTaskCompletedEvent?.Invoke();
         }
+
         if (tasksCompleted >= 3)
         {
-            MetricLogger.Instance.TrackScore(score);
-            MetricLogger.Instance.TrackSessionTime(sessionTime);
             EndGame(true);
+            OnTaskCompletedEvent?.Invoke();
         }
-        
+            
     }
 
     private void UpdateStressVisuals()
     {
         if (roomLight == null) return;
         float t = grandpaStress / maxStress;
+
         if (grandpaStress > peakStress)
             peakStress = grandpaStress;
 
@@ -232,6 +248,7 @@ public class GameManager : MonoBehaviour
 
         if (colorAdjustments != null)
             colorAdjustments.saturation.value = Mathf.Lerp(0f, -50f, t);
+
         if (bgmSource != null)
             bgmSource.pitch = Mathf.Lerp(1f, 1.4f, t);
     }
@@ -245,11 +262,6 @@ public class GameManager : MonoBehaviour
     private void EndGame(bool success)
     {
         gameActive = false;
-        if (success)
-            NPC_Controller.Instance.PlayEndAnimation(true);
-        else
-            NPC_Controller.Instance.PlayEndAnimation(false);
-
         PlayerPrefs.SetInt("GameSuccess", success ? 1 : 0);
         PlayerPrefs.SetInt("Score", score);
         PlayerPrefs.SetInt("TasksCompleted", tasksCompleted);
@@ -258,14 +270,12 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetFloat("SessionTime", sessionTime);
         PlayerPrefs.SetFloat("PeakStress", peakStress);
         PlayerPrefs.Save();
-
-        StartCoroutine(SendToAWS());
-
+        OnGameEnded?.Invoke(success);
+        StartCoroutine(LoadResultScene());
     }
 
-    private IEnumerator SendToAWS()
+    private IEnumerator LoadResultScene()
     {
-        yield return StartCoroutine(MetricLogger.Instance.PostMetricsAndWaits());
         yield return new WaitForSeconds(2.5f);
         SceneManager.LoadScene(2);
     }

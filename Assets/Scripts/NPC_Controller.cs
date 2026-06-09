@@ -7,7 +7,7 @@ using TMPro;
 public class NPC_Controller : MonoBehaviour
 {
     public static NPC_Controller Instance;
-    private bool shouldLookAtPlayer = false;
+    private bool shouldLookAtPlayer;
 
     [Header("Tasks")]
     public string[] taskItemNames;
@@ -67,7 +67,6 @@ public class NPC_Controller : MonoBehaviour
             task2Choices
         };
     }
-
     private void Start()
     {
         shouldLookAtPlayer = false;
@@ -75,22 +74,27 @@ public class NPC_Controller : MonoBehaviour
         feedbackPanel.SetActive(false);
         requestPanel.SetActive(false);
         grandpaAnimator.SetBool("isStanding", false);
+        GameManager.Instance.OnStressChanged.AddListener(UpdateStressAnimation);
+        UpdateStressAnimation(GameManager.Instance.grandpaStress);
+        GameManager.Instance.OnGameEnded.AddListener(PlayEndAnimation);
+
 
     }
-
-    public void Update()
+    private void OnDisable()
     {
-        stress = GameManager.Instance.grandpaStress;
-        grandpaAnimator.SetFloat("StressLevel", stress);
+        GameManager.Instance.OnStressChanged.RemoveListener(UpdateStressAnimation);
+        GameManager.Instance.OnGameEnded.RemoveListener(PlayEndAnimation);
     }
-
+    private void UpdateStressAnimation(float stressValue)
+    {
+        grandpaAnimator.SetFloat("StressLevel", stressValue);
+    }
     public void OnPlayerEnterRoom()
     {
         if (playerEnteredRoom) return;
         playerEnteredRoom = true;
         StartCoroutine(StandUpSequence());
     }
-
     IEnumerator StandUpSequence()
     {
         yield return new WaitForSeconds(1f);
@@ -109,7 +113,6 @@ public class NPC_Controller : MonoBehaviour
         grandpaAnimator.SetTrigger("isSearching");
 
     }
-
     public void StartTask(int index)
     {
         GameManager.Instance.gameActive = true;

@@ -10,7 +10,6 @@ public class MetricLogger : MonoBehaviour
     [Header("AWS Settings")]
     public string apiEndpoint = "YOUR_API_GATEWAY_URL";
 
-    [Header("Gameplay Metrics")]
     private string sessionId = "";
     private int finalScore = 0;
     private int tasksCompleted = 0;
@@ -18,15 +17,11 @@ public class MetricLogger : MonoBehaviour
     private float sessionTime = 0f;
     private List<float> taskTimes = new List<float>();
     private float taskStartTime = 0f;
-
-    [Header("Choices Metrics")]
     private int correctChoices = 0;
     private int wrongChoices = 0;
     private int neutralChoices = 0;
     private float peakStress = 0f;
     private int confusionTriggersHit = 0;
-
-    [Header("Data to AWS")]
     public bool isReady = false;
 
     private void Awake()
@@ -42,11 +37,30 @@ public class MetricLogger : MonoBehaviour
         sessionId = System.Guid.NewGuid().ToString();
         isReady = true;
     }
+
     private void Start()
     {
         taskStartTime = Time.time;
+        GameManager.Instance.OnScoreChanged.AddListener(TrackScore);
+        GameManager.Instance.OnStressChanged.AddListener(TrackStress);
+        GameManager.Instance.OnTaskCompletedEvent.AddListener(TrackTaskCompleted);
+        GameManager.Instance.OnIncorrectPickupEvent.AddListener(TrackIncorrectPickup);
+        GameManager.Instance.OnGameEnded.AddListener(OnGameEnded);
         SendLiveUpdate();
-        
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnScoreChanged.RemoveListener(TrackScore);
+        GameManager.Instance.OnStressChanged.RemoveListener(TrackStress);
+        GameManager.Instance.OnTaskCompletedEvent.RemoveListener(TrackTaskCompleted);
+        GameManager.Instance.OnIncorrectPickupEvent.RemoveListener(TrackIncorrectPickup);
+        GameManager.Instance.OnGameEnded.RemoveListener(OnGameEnded);
+    }
+
+    public void TrackScore(int score)
+    {
+        finalScore = score;
     }
     public void TrackStress(float currentStress)
     {
@@ -64,30 +78,39 @@ public class MetricLogger : MonoBehaviour
     {
         incorrectPickups++;
     }
+    public void OnGameEnded(bool success)
+    {
+        StartCoroutine(PostMetricsAndWaits());
+    }
+
     public void TrackCorrectChoice()
     {
         correctChoices++;
     }
+
     public void TrackWrongChoice()
     {
         wrongChoices++;
+        SendLiveUpdate();
     }
+
     public void TrackNeutralChoice()
     {
         neutralChoices++;
+        SendLiveUpdate();
     }
+
     public void TrackConfusionTriggered()
     {
         confusionTriggersHit++;
+        SendLiveUpdate();
     }
-    public void TrackScore(int score)
-    {
-        finalScore = score;
-    }
+
     public void TrackSessionTime(float time)
     {
         sessionTime = time;
     }
+
     private float GetAverageTaskTime()
     {
         if (taskTimes.Count == 0) return 0f;
@@ -96,11 +119,12 @@ public class MetricLogger : MonoBehaviour
             total += t;
         return total / taskTimes.Count;
     }
+
     public void SendLiveUpdate()
     {
-        PlayerPrefs.Save();
         StartCoroutine(PostMetricsAndWaits());
     }
+
     public IEnumerator PostMetricsAndWaits()
     {
         MetricsData data = new MetricsData
@@ -116,13 +140,16 @@ public class MetricLogger : MonoBehaviour
             neutralChoices = neutralChoices,
             peakStress = peakStress,
             avgTaskTime = GetAverageTaskTime(),
-            confusionTriggersHit = confusionTriggersHit,
+            confusionTriggersHit = confusionTriggersHit
         };
+
         string json = JsonUtility.ToJson(data);
         Debug.Log("Sending: " + json);
+
         using (UnityWebRequest request = UnityWebRequest.Post(apiEndpoint, json, "application/json"))
         {
             yield return request.SendWebRequest();
+
             if (request.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("SUCCESS: " + request.downloadHandler.text);
@@ -130,7 +157,6 @@ public class MetricLogger : MonoBehaviour
             else
             {
                 Debug.LogError("FAILED: " + request.error);
-                Debug.LogError("RESPONSE BODY: " + request.downloadHandler.text);
             }
         }
     }
