@@ -36,39 +36,31 @@ public class PlayerInteractor : MonoBehaviour
         interactPrompt.SetActive(false);
         confusionDuplicate.SetActive(false);
     }
-
-    private void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        float dist = Vector3.Distance(transform.position, player.position);
+        playerNearby = true;
+        ShowHighlight();
+
         if (isConfusionObject && !confusionTriggered)
         {
-            if (dist <= confusionTriggerDistance)
-            {
-                confusionTriggered = true;
-                TriggerConfusion();
-                return;
-            }
+            confusionTriggered = true;
+            TriggerConfusion();
         }
+    }
 
-        if (dist <= interactDistance)
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Player"))
+            return;
+
+        playerNearby = false;
+        HideHighlight();
+    }
+    private void Update()
+    {
+        if (playerNearby && Input.GetKeyDown(KeyCode.E))
         {
-            if (!playerNearby)
-            {
-                playerNearby = true;
-                ShowHighlight();
-            }
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                OnInteract();
-            }
-        }
-        else
-        {
-            if (playerNearby)
-            {
-                playerNearby = false;
-                HideHighlight();
-            }
+            OnInteract();
         }
     }
 
@@ -86,7 +78,7 @@ public class PlayerInteractor : MonoBehaviour
         confusionDuplicate.SetActive(true);
         NPC_Controller.Instance.ShowWrongItemFeedback("He trusts you to find what his mind can no longer hold.");
         MetricLogger.Instance.TrackConfusionTriggered();
-        
+
     }
 
     private IEnumerator FadeOut()

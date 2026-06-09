@@ -16,30 +16,27 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         if (ThirdPersonCamera.isUIOpen) return;
-
-        Move();
-        ApplyGravity();
+        if (controller.enabled)
+        {
+            Move();
+        }
+       
     }
 
     private void Move()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
 
-        // move relative to player facing direction
-        Vector3 moveDir = transform.right * h
-            + transform.forward * v;
+        Vector3 moveDirection = transform.right * h + transform.forward * v;
 
-        controller.Move(moveDir * moveSpeed * Time.deltaTime);
-    }
-
-    private void ApplyGravity()
-    {
         if (controller.isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
-        }
+        }    
         velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+
+        Vector3 finalMovement = moveDirection * moveSpeed + velocity;
+        controller.Move(finalMovement * Time.deltaTime);
     }
 }
