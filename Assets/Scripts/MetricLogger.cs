@@ -40,10 +40,10 @@ public class MetricLogger : MonoBehaviour
     private void Start()
     {
         taskStartTime = Time.time;
+        GameManager.Instance.OnIncorrectPickupEvent.AddListener(TrackIncorrectPickup);
         GameManager.Instance.OnScoreChanged.AddListener(TrackScore);
         GameManager.Instance.OnStressChanged.AddListener(TrackStress);
         GameManager.Instance.OnTaskCompletedEvent.AddListener(TrackTaskCompleted);
-        GameManager.Instance.OnIncorrectPickupEvent.AddListener(TrackIncorrectPickup);
         GameManager.Instance.OnGameEnded.AddListener(OnGameEnded);
         if (isReady)
         {
@@ -82,7 +82,6 @@ public class MetricLogger : MonoBehaviour
     public void TrackIncorrectPickup()
     {
         incorrectPickups++;
-        SendLiveUpdate();
     }
     public void OnGameEnded(bool success)
     {

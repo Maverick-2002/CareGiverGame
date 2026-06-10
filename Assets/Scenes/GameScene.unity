@@ -891,7 +891,7 @@ PrefabInstance:
     - target: {fileID: 754114939699641873, guid: a8bcd1e7c98138b4a9a8fe1b8f9a8a55,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.091
+      value: 0.344
       objectReference: {fileID: 0}
     - target: {fileID: 754114939699641873, guid: a8bcd1e7c98138b4a9a8fe1b8f9a8a55,
         type: 3}
@@ -936,7 +936,7 @@ PrefabInstance:
     - target: {fileID: 7744369415598248921, guid: a8bcd1e7c98138b4a9a8fe1b8f9a8a55,
         type: 3}
       propertyPath: m_Size.x
-      value: 0.42766356
+      value: 0.36251214
       objectReference: {fileID: 0}
     - target: {fileID: 7744369415598248921, guid: a8bcd1e7c98138b4a9a8fe1b8f9a8a55,
         type: 3}
@@ -946,7 +946,7 @@ PrefabInstance:
     - target: {fileID: 7744369415598248921, guid: a8bcd1e7c98138b4a9a8fe1b8f9a8a55,
         type: 3}
       propertyPath: m_Center.x
-      value: 0.1403935
+      value: 0.107817754
       objectReference: {fileID: 0}
     - target: {fileID: 7744369415598248921, guid: a8bcd1e7c98138b4a9a8fe1b8f9a8a55,
         type: 3}
@@ -956,7 +956,7 @@ PrefabInstance:
     - target: {fileID: 7744369415598248921, guid: a8bcd1e7c98138b4a9a8fe1b8f9a8a55,
         type: 3}
       propertyPath: m_Center.z
-      value: -0.0000119938395
+      value: -0.000011988891
       objectReference: {fileID: 0}
     - target: {fileID: 7744369415598248921, guid: a8bcd1e7c98138b4a9a8fe1b8f9a8a55,
         type: 3}
@@ -3984,22 +3984,22 @@ PrefabInstance:
     - target: {fileID: 1441701322026170902, guid: 8da2e341c57b7bc40804bd060e00be07,
         type: 3}
       propertyPath: m_Size.z
-      value: 0.3860185
+      value: 0.28430364
       objectReference: {fileID: 0}
     - target: {fileID: 1441701322026170902, guid: 8da2e341c57b7bc40804bd060e00be07,
         type: 3}
       propertyPath: m_Center.x
-      value: 0.0037009083
+      value: 0.003700903
       objectReference: {fileID: 0}
     - target: {fileID: 1441701322026170902, guid: 8da2e341c57b7bc40804bd060e00be07,
         type: 3}
       propertyPath: m_Center.y
-      value: 0.21002416
+      value: 0.21002127
       objectReference: {fileID: 0}
     - target: {fileID: 1441701322026170902, guid: 8da2e341c57b7bc40804bd060e00be07,
         type: 3}
       propertyPath: m_Center.z
-      value: 0.26022908
+      value: 0.20936874
       objectReference: {fileID: 0}
     - target: {fileID: 1441701322026170902, guid: 8da2e341c57b7bc40804bd060e00be07,
         type: 3}
@@ -20903,7 +20903,7 @@ MonoBehaviour:
   OnIncorrectPickupEvent:
     m_PersistentCalls:
       m_Calls: []
-  stressIncreaseInterval: 5
+  stressIncreaseInterval: 10
   stressIncreaseAmount: 5
 --- !u!82 &1817081771
 AudioSource:

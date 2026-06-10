@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
     private int correctChoices = 0;
     private int wrongChoices = 0;
     private float stressTimer = 0f;
-    public float stressIncreaseInterval = 5f;
+    private float stressIncreaseInterval = 7.5f;
     public float stressIncreaseAmount = 5f;
     private float peakStress = 0f;
 
@@ -198,9 +198,9 @@ public class GameManager : MonoBehaviour
     public void OnIncorrectPickup()
     {
         incorrectPickups++;
+        OnIncorrectPickupEvent?.Invoke();
         AddStress(5f);
         sfxSource.PlayOneShot(wrongSFX);
-        OnIncorrectPickupEvent?.Invoke();
     }
 
     public void OnTaskCompleted()

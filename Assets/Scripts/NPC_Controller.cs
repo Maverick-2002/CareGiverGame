@@ -129,7 +129,6 @@ public class NPC_Controller : MonoBehaviour
         yield return new WaitForSeconds(7f);
         npcVoice.PlayOneShot(taskVoices[currentTask].confusionClip);
         grandpaDialogueText.text = confusionDialogues[currentTask];
-        GameManager.Instance.AddStress(10f);
         yield return new WaitForSeconds(10f);
         grandpaDialogueText.text = taskDialogues[currentTask];
     }
@@ -235,7 +234,7 @@ public class NPC_Controller : MonoBehaviour
         feedbackPanel.SetActive(true);
         feedbackText.text = message;
         feedbackText.color = new Color(0.8f, 0.2f, 0.2f, 1f);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         feedbackPanel.SetActive(false);
     }
     private void StartNextTask()

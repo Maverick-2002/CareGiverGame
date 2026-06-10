@@ -41,7 +41,14 @@ public class PlayerInteractor : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        if (GameManager.Instance.currentTask != taskNumber)  return;
+        if (GameManager.Instance.currentTask != taskNumber)
+        {
+            Debug.Log($"{gameObject.name} triggered by {other.name}");
+            GameManager.Instance.OnIncorrectPickup();
+            StartCoroutine(WrongItemFeedback());
+            NPC_Controller.Instance.ShowWrongItemFeedback("That's not the right item...");
+            return;
+        }
 
         playerNearby = true;
         ShowHighlight();
