@@ -95,8 +95,6 @@ public class GameManager : MonoBehaviour
         if (!gameActive) return;
         HandleStressIncrease();
         UpdateTimers();
-        UpdateTimerUI();
-        CheckGameOver();
     }
 
     public void TriggerBlur()
@@ -145,21 +143,10 @@ public class GameManager : MonoBehaviour
     {
         sessionTime += Time.deltaTime;
         currentTaskTimer += Time.deltaTime;
-    }
-
-    private void UpdateTimerUI()
-    {
         timerText.text = "Time: " + Mathf.FloorToInt(sessionTime) + "s";
         stressSlider.value = grandpaStress / maxStress;
         UpdateStressVisuals();
     }
-
-    private void CheckGameOver()
-    {
-        if (grandpaStress >= maxStress)
-            EndGame(false);
-    }
-
     public void playerConfusionSFX()
     {
         sfxSource.PlayOneShot(playerConfusion);
@@ -171,6 +158,10 @@ public class GameManager : MonoBehaviour
         wrongChoices++;
         HandleHeartbeat();
         OnStressChanged?.Invoke(grandpaStress);
+        if (grandpaStress >= maxStress)
+        {
+            EndGame(false);
+        }
     }
 
     private void HandleHeartbeat()

@@ -15,7 +15,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (ThirdPersonCamera.isUIOpen) return;
         if (controller.enabled)
         {
             Move();

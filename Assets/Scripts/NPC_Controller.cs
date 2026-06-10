@@ -167,8 +167,7 @@ public class NPC_Controller : MonoBehaviour
             int index = i;
             choiceTexts[i].text = responseChoices[currentTask][i];
             choiceButtons[i].onClick.RemoveAllListeners();
-            choiceButtons[i].onClick.AddListener(
-                () => OnChoiceSelected(index));
+            choiceButtons[i].onClick.AddListener(() => OnChoiceSelected(index));
         }
     }
 

@@ -18,9 +18,27 @@ public class CameraShake : MonoBehaviour
         }
         originalPos = transform.localPosition;
     }
-    private void Update()
+    public void Start()
     {
-        float stress = GameManager.Instance.grandpaStress;
+        GameManager.Instance.OnStressChanged.AddListener(UpdateShake);
+    }
+    public void Update()
+    {
+        if(shakeAmount > 0f)
+        {
+            transform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
+        }
+        else
+        {
+            transform.localPosition = originalPos;
+        }
+    }
+    private void OnDisable()
+    {
+            GameManager.Instance.OnStressChanged.RemoveListener(UpdateShake);
+    }
+    private void UpdateShake(float stress)
+    {
         float maxStress = GameManager.Instance.maxStress;
         float t = stress / maxStress;
 
