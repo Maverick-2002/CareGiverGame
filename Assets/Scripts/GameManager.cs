@@ -55,7 +55,6 @@ public class GameManager : MonoBehaviour
     private int incorrectPickups = 0;
     private int correctChoices = 0;
     private int wrongChoices = 0;
-    private float currentTaskTimer = 0f;
     private float stressTimer = 0f;
     public float stressIncreaseInterval = 5f;
     public float stressIncreaseAmount = 5f;
@@ -142,7 +141,6 @@ public class GameManager : MonoBehaviour
     private void UpdateTimers()
     {
         sessionTime += Time.deltaTime;
-        currentTaskTimer += Time.deltaTime;
         timerText.text = "Time: " + Mathf.FloorToInt(sessionTime) + "s";
         stressSlider.value = grandpaStress / maxStress;
         UpdateStressVisuals();
@@ -206,7 +204,6 @@ public class GameManager : MonoBehaviour
     public void OnTaskCompleted()
     {
         tasksCompleted++;
-        currentTaskTimer = 0f;
         AddScore(100);
         OnTaskCompletedEvent?.Invoke();
         if (tasksCompleted >= 3)
