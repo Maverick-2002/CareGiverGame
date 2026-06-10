@@ -106,6 +106,9 @@ public class PlayerInteractor : MonoBehaviour
 
     private void OnInteract()
     {
+        if (isConfusionObject)
+            return;
+
         if (isCorrectItem)
         {
             HideHighlight();
