@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public int tasksCompleted = 0;
     public float sessionTime = 0f;
     public bool gameActive = false;
+    public int currentTask = 1;
 
     [Header("UI")]
     public TextMeshProUGUI scoreText;
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
     public AudioClip playerConfusion;
     public AudioClip heartbeatSFX;
     private bool heartbeatPlaying = false;
+    
 
     [Header("Unity Events")]
     public UnityEvent<float> OnStressChanged;

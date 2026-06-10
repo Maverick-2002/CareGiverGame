@@ -27,6 +27,9 @@ public class PlayerInteractor : MonoBehaviour
     private bool playerNearby = false;
     private bool confusionTriggered = false;
 
+    [Header("Task")]
+    public int taskNumber;
+
     private void Start()
     {
         objectRenderer = GetComponent<Renderer>();
@@ -38,6 +41,8 @@ public class PlayerInteractor : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
+        if (GameManager.Instance.currentTask != taskNumber)  return;
+
         playerNearby = true;
         ShowHighlight();
 
@@ -105,6 +110,7 @@ public class PlayerInteractor : MonoBehaviour
         {
             HideHighlight();
             gameObject.SetActive(false);
+            GameManager.Instance.currentTask++;
             NPC_Controller.Instance.OnCorrectItemFound();
         }
         else

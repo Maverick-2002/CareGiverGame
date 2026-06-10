@@ -1018,6 +1018,7 @@ MonoBehaviour:
   highlightMaterial: {fileID: 2100000, guid: a9829d0e5667eb84eb44e314ca36e8eb, type: 2}
   interactPrompt: {fileID: 364778344}
   playerObj: {fileID: 4956816949278582966}
+  taskNumber: 3
 --- !u!1001 &67925596
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13075,6 +13076,7 @@ MonoBehaviour:
   highlightMaterial: {fileID: 2100000, guid: a9829d0e5667eb84eb44e314ca36e8eb, type: 2}
   interactPrompt: {fileID: 364778344}
   playerObj: {fileID: 4956816949278582966}
+  taskNumber: 3
 --- !u!1 &1056796413
 GameObject:
   m_ObjectHideFlags: 0
@@ -14609,6 +14611,7 @@ MonoBehaviour:
   highlightMaterial: {fileID: 2100000, guid: 929df13210b4ad44e8286cd37d2a1824, type: 2}
   interactPrompt: {fileID: 364778344}
   playerObj: {fileID: 4956816949278582966}
+  taskNumber: 1
 --- !u!1001 &1193626169
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14875,6 +14878,7 @@ MonoBehaviour:
   highlightMaterial: {fileID: 2100000, guid: 36717f03849d33241b04d28b6c8974bf, type: 2}
   interactPrompt: {fileID: 364778344}
   playerObj: {fileID: 4956816949278582966}
+  taskNumber: 2
 --- !u!1001 &1208917838
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19763,6 +19767,7 @@ MonoBehaviour:
   highlightMaterial: {fileID: 2100000, guid: 929df13210b4ad44e8286cd37d2a1824, type: 2}
   interactPrompt: {fileID: 364778344}
   playerObj: {fileID: 4956816949278582966}
+  taskNumber: 0
 --- !u!65 &1686025139
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20562,6 +20567,7 @@ MonoBehaviour:
   highlightMaterial: {fileID: 2100000, guid: 36717f03849d33241b04d28b6c8974bf, type: 2}
   interactPrompt: {fileID: 364778344}
   playerObj: {fileID: 4956816949278582966}
+  taskNumber: 2
 --- !u!1001 &1783165262
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20868,6 +20874,7 @@ MonoBehaviour:
   tasksCompleted: 0
   sessionTime: 0
   gameActive: 0
+  currentTask: 1
   scoreText: {fileID: 312859885}
   timerText: {fileID: 73803377}
   stressSlider: {fileID: 268466425}
