@@ -14,7 +14,6 @@ public class MetricLogger : MonoBehaviour
     private int finalScore = 0;
     private int tasksCompleted = 0;
     private int incorrectPickups = 0;
-    private float sessionTime = 0f;
     private List<float> taskTimes = new List<float>();
     private float taskStartTime = 0f;
     private int correctChoices = 0;
@@ -46,9 +45,11 @@ public class MetricLogger : MonoBehaviour
         GameManager.Instance.OnTaskCompletedEvent.AddListener(TrackTaskCompleted);
         GameManager.Instance.OnIncorrectPickupEvent.AddListener(TrackIncorrectPickup);
         GameManager.Instance.OnGameEnded.AddListener(OnGameEnded);
-        SendLiveUpdate();
+        if (isReady)
+        {
+            SendLiveUpdate();
+        }
     }
-
     private void OnDisable()
     {
         GameManager.Instance.OnScoreChanged.RemoveListener(TrackScore);
@@ -65,7 +66,10 @@ public class MetricLogger : MonoBehaviour
     public void TrackStress(float currentStress)
     {
         if (currentStress > peakStress)
+        {
             peakStress = currentStress;
+        }
+        SendLiveUpdate();
     }
     public void TrackTaskCompleted()
     {
@@ -73,14 +77,16 @@ public class MetricLogger : MonoBehaviour
         float timeTaken = Time.time - taskStartTime;
         taskTimes.Add(timeTaken);
         taskStartTime = Time.time;
+        SendLiveUpdate();
     }
     public void TrackIncorrectPickup()
     {
         incorrectPickups++;
+        SendLiveUpdate();
     }
     public void OnGameEnded(bool success)
     {
-        StartCoroutine(PostMetricsAndWaits());
+        SendLiveUpdate();
     }
 
     public void TrackCorrectChoice()
@@ -91,24 +97,17 @@ public class MetricLogger : MonoBehaviour
     public void TrackWrongChoice()
     {
         wrongChoices++;
-        SendLiveUpdate();
     }
 
     public void TrackNeutralChoice()
     {
         neutralChoices++;
-        SendLiveUpdate();
     }
 
     public void TrackConfusionTriggered()
     {
         confusionTriggersHit++;
         SendLiveUpdate();
-    }
-
-    public void TrackSessionTime(float time)
-    {
-        sessionTime = time;
     }
 
     private float GetAverageTaskTime()
@@ -134,7 +133,7 @@ public class MetricLogger : MonoBehaviour
             finalScore = finalScore,
             tasksCompleted = tasksCompleted,
             incorrectPickups = incorrectPickups,
-            sessionTime = sessionTime,
+            sessionTime = GameManager.Instance.sessionTime,
             correctChoices = correctChoices,
             wrongChoices = wrongChoices,
             neutralChoices = neutralChoices,

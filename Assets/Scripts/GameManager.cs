@@ -155,7 +155,6 @@ public class GameManager : MonoBehaviour
     public void AddStress(float amount)
     {
         grandpaStress = Mathf.Clamp(grandpaStress + amount, 0f, maxStress);
-        wrongChoices++;
         HandleHeartbeat();
         OnStressChanged?.Invoke(grandpaStress);
         if (grandpaStress >= maxStress)
@@ -209,16 +208,12 @@ public class GameManager : MonoBehaviour
         tasksCompleted++;
         currentTaskTimer = 0f;
         AddScore(100);
-
-        if (tasksCompleted <= 3)
-        {
-           OnTaskCompletedEvent?.Invoke();
-        }
-
+        OnTaskCompletedEvent?.Invoke();
         if (tasksCompleted >= 3)
         {
             EndGame(true);
-            OnTaskCompletedEvent?.Invoke();
+            return;
+            
         }
             
     }

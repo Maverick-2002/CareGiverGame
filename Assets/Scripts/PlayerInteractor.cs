@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Threading.Tasks;
 
 public class PlayerInteractor : MonoBehaviour
 {
@@ -38,6 +37,7 @@ public class PlayerInteractor : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (!other.CompareTag("Player")) return;
         playerNearby = true;
         ShowHighlight();
 
@@ -50,9 +50,7 @@ public class PlayerInteractor : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("Player"))
-            return;
-
+        if (!other.CompareTag("Player")) return;
         playerNearby = false;
         HideHighlight();
     }
@@ -78,7 +76,6 @@ public class PlayerInteractor : MonoBehaviour
         confusionDuplicate.SetActive(true);
         NPC_Controller.Instance.ShowWrongItemFeedback("He trusts you to find what his mind can no longer hold.");
         MetricLogger.Instance.TrackConfusionTriggered();
-
     }
 
     private IEnumerator FadeOut()

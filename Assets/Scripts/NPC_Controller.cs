@@ -77,6 +77,7 @@ public class NPC_Controller : MonoBehaviour
         GameManager.Instance.OnStressChanged.AddListener(UpdateStressAnimation);
         UpdateStressAnimation(GameManager.Instance.grandpaStress);
         GameManager.Instance.OnGameEnded.AddListener(PlayEndAnimation);
+        GameManager.Instance.OnTaskCompletedEvent.AddListener(StartNextTask);
 
 
     }
@@ -84,6 +85,7 @@ public class NPC_Controller : MonoBehaviour
     {
         GameManager.Instance.OnStressChanged.RemoveListener(UpdateStressAnimation);
         GameManager.Instance.OnGameEnded.RemoveListener(PlayEndAnimation);
+        GameManager.Instance.OnTaskCompletedEvent.RemoveListener(StartNextTask);
     }
     private void UpdateStressAnimation(float stressValue)
     {
@@ -116,17 +118,9 @@ public class NPC_Controller : MonoBehaviour
     public void StartTask(int index)
     {
         GameManager.Instance.gameActive = true;
-        if (index >= taskItemNames.Length)
-        {
-            GameManager.Instance.OnTaskCompleted();
-            return;
-        }
         requestPanel.SetActive(true);
         npcVoice.PlayOneShot(taskVoices[index].taskClip);
-        grandpaDialogueText.text = taskDialogues[index];
-
-        if (MetricLogger.Instance.isReady)
-            MetricLogger.Instance.SendLiveUpdate();
+        grandpaDialogueText.text = taskDialogues[index];     
         StartCoroutine(ConfusionEvent());
     }
 
@@ -136,7 +130,6 @@ public class NPC_Controller : MonoBehaviour
         npcVoice.PlayOneShot(taskVoices[currentTask].confusionClip);
         grandpaDialogueText.text = confusionDialogues[currentTask];
         GameManager.Instance.AddStress(10f);
-        MetricLogger.Instance.SendLiveUpdate();
         yield return new WaitForSeconds(10f);
         grandpaDialogueText.text = taskDialogues[currentTask];
     }
@@ -145,7 +138,6 @@ public class NPC_Controller : MonoBehaviour
     {
         StopAllCoroutines();
         requestPanel.SetActive(false);
-        MetricLogger.Instance.SendLiveUpdate();
         ShowChoicePanel();
     }
 
@@ -203,8 +195,7 @@ public class NPC_Controller : MonoBehaviour
                 grandpaAnimator.SetTrigger("Confused");
                 break;
         }
-        MetricLogger.Instance.SendLiveUpdate();
-        StartCoroutine(NextTask());
+        GameManager.Instance.OnTaskCompleted();
     }
 
     private void ShowFeedback(string message, Color color)
@@ -247,13 +238,14 @@ public class NPC_Controller : MonoBehaviour
         yield return new WaitForSeconds(3f);
         feedbackPanel.SetActive(false);
     }
-
+    private void StartNextTask()
+    {
+        StartCoroutine(NextTask());
+    }
     private IEnumerator NextTask()
     {
         yield return new WaitForSeconds(1.5f);
         currentTask++;
-        GameManager.Instance.OnTaskCompleted();
-
         if (currentTask < taskItemNames.Length)
         {
             StartTask(currentTask);

@@ -45,11 +45,10 @@ public class CameraShake : MonoBehaviour
         if (t > 0.5f)
         {
             shakeAmount = Mathf.Lerp(0f, 0.01f,(t - 0.5f) * 2f);
-            transform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
         }
         else
         {
-            transform.localPosition = originalPos;
+            shakeAmount = 0f;
         }
     }
 }
