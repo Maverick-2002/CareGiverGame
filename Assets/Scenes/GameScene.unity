@@ -3984,22 +3984,22 @@ PrefabInstance:
     - target: {fileID: 1441701322026170902, guid: 8da2e341c57b7bc40804bd060e00be07,
         type: 3}
       propertyPath: m_Size.z
-      value: 0.28430364
+      value: 0.32074776
       objectReference: {fileID: 0}
     - target: {fileID: 1441701322026170902, guid: 8da2e341c57b7bc40804bd060e00be07,
         type: 3}
       propertyPath: m_Center.x
-      value: 0.003700903
+      value: 0.0037009078
       objectReference: {fileID: 0}
     - target: {fileID: 1441701322026170902, guid: 8da2e341c57b7bc40804bd060e00be07,
         type: 3}
       propertyPath: m_Center.y
-      value: 0.21002127
+      value: 0.21002077
       objectReference: {fileID: 0}
     - target: {fileID: 1441701322026170902, guid: 8da2e341c57b7bc40804bd060e00be07,
         type: 3}
       propertyPath: m_Center.z
-      value: 0.20936874
+      value: 0.22759016
       objectReference: {fileID: 0}
     - target: {fileID: 1441701322026170902, guid: 8da2e341c57b7bc40804bd060e00be07,
         type: 3}
@@ -9709,6 +9709,36 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1229868246}
     m_Modifications:
+    - target: {fileID: -5630612507380377122, guid: e3997238924b71346b938f551184afee,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.6688445
+      objectReference: {fileID: 0}
+    - target: {fileID: -5630612507380377122, guid: e3997238924b71346b938f551184afee,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.55748343
+      objectReference: {fileID: 0}
+    - target: {fileID: -5630612507380377122, guid: e3997238924b71346b938f551184afee,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 0.44300008
+      objectReference: {fileID: 0}
+    - target: {fileID: -5630612507380377122, guid: e3997238924b71346b938f551184afee,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 0.034422264
+      objectReference: {fileID: 0}
+    - target: {fileID: -5630612507380377122, guid: e3997238924b71346b938f551184afee,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.27874172
+      objectReference: {fileID: 0}
+    - target: {fileID: -5630612507380377122, guid: e3997238924b71346b938f551184afee,
+        type: 3}
+      propertyPath: m_Center.z
+      value: -0.020874918
+      objectReference: {fileID: 0}
     - target: {fileID: 8139428767899978133, guid: e3997238924b71346b938f551184afee,
         type: 3}
       propertyPath: m_Name
@@ -20903,7 +20933,6 @@ MonoBehaviour:
   OnIncorrectPickupEvent:
     m_PersistentCalls:
       m_Calls: []
-  stressIncreaseInterval: 10
   stressIncreaseAmount: 5
 --- !u!82 &1817081771
 AudioSource:
@@ -27811,9 +27840,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 3.242328
+  m_Height: 2.7093282
   m_Direction: 1
-  m_Center: {x: 0, y: 1.1211593, z: 0}
+  m_Center: {x: 0, y: 1.3876525, z: 0}
 --- !u!1 &5484296048015564906
 GameObject:
   m_ObjectHideFlags: 0
