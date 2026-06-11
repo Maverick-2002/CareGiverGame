@@ -14617,8 +14617,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.037071593, y: 0.04345625, z: 0.017970655}
-  m_Center: {x: -0.006734862, y: -0.0051061963, z: 0.0052417526}
+  m_Size: {x: 0.04135025, y: 0.04651234, z: 0.017970651}
+  m_Center: {x: -0.008874187, y: -0.006634248, z: 0.005241752}
 --- !u!114 &1175901057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20899,7 +20899,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalVolume: {fileID: 832575518}
   grandpaStress: 0
-  maxStress: 70
+  maxStress: 55
   score: 0
   tasksCompleted: 0
   sessionTime: 0
